@@ -256,7 +256,6 @@ function showEasterEgg() {
   document.getElementById('calc-value').innerHTML = `<span style="font-size:clamp(16px,5vw,26px);color:var(--calc-accent);font-weight:900;font-family:ui-rounded,'SF Pro Rounded',Arial,sans-serif;letter-spacing:0;text-align:center;display:block;padding:10px 0;">${quote}</span>`;
 }
 function handleDisplayClick() {
-  if(event) event.stopPropagation();
   if (typeof isEditMode!=='undefined' && isEditMode) { handleEditModeClick('display'); return; }
   if (showingEasterEgg) {
     showingEasterEgg = false;
@@ -348,7 +347,6 @@ function calcBeep(){
 function toggleCalculatorSound(){CALC_SOUND=!CALC_SOUND;lsSet('hogar_calc_sound',CALC_SOUND?'1':'0');updateCalc();calcBeep();}
 
 function handleCalcKey(v){
-  if(event) event.stopPropagation();
   if (typeof isEditMode!=='undefined' && isEditMode) { handleEditModeClick('key', v); return; }
   if(v==='colors'){toggleCalculatorPalette();return;}
   if(v==='sound'){toggleCalculatorSound();return;}
@@ -366,7 +364,6 @@ function handleCalcKey(v){
 }
 
 function toggleCalculatorPalette(){
-  if(event) event.stopPropagation();
   const p=document.getElementById('calc-colors-overlay');
   if(p){p.classList.toggle('open');}
 }
@@ -419,9 +416,9 @@ window.onload = () => {
 let isEditMode = false;
 let currentEditType = null;
 let currentCustomTheme = null;
+let editClickHandled = false;
 
 function toggleEditMode() {
-  if(event) event.stopPropagation();
   isEditMode = !isEditMode;
   const btn = document.getElementById('edit-mode-btn');
   if (isEditMode) {
@@ -444,7 +441,10 @@ function toggleEditMode() {
 }
 
 function handleEditModeClick(type, val) {
-  if(event) event.stopPropagation();
+  if (editClickHandled) return;
+  editClickHandled = true;
+  setTimeout(() => { editClickHandled = false; }, 100);
+
   let editType = '';
   if (type === 'display') editType = 'display';
   else if (type === 'shell') editType = 'shell';
