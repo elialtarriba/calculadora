@@ -25,6 +25,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
   width:100vw; height:100vh; padding:env(safe-area-inset-top, 20px) 16px env(safe-area-inset-bottom, 20px);
   display:flex; flex-direction:column; position:relative;
 }
+body.edit-mode .calculator-shell { box-shadow: inset 0 0 0 4px #1ABC9C; }
+body.edit-mode .calc-key::after, body.edit-mode .calculator-display::after, body.edit-mode .calculator-shell::after {
+  content:''; position:absolute; inset:0; border:2px dashed #1ABC9C; border-radius:inherit; opacity:0; pointer-events:none; z-index:99; transition:opacity .1s;
+}
+body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:active::after { opacity:1; }
 .calc-top-bar { display:flex; align-items:center; justify-content:space-between; margin-top:10px; margin-bottom:12px; padding:0 4px; }
 .calc-top-bar h1 { font-size:16px; font-weight:800; color:#573722; text-transform:uppercase; letter-spacing:1px; }
 .calc-close-btn{display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;min-height:28px;line-height:1;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));border:1px solid rgba(255,255,255,.5);border-radius:14px;font-size:12px;font-weight:800;color:#151515;box-shadow:0 3px 0 var(--calc-op-shadow),0 4px 6px rgba(0,0,0,.15);cursor:pointer;transition:all .1s}
@@ -54,9 +59,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
 }
 .calc-color { width:44px; height:44px; border-radius:12px; border:2px solid rgba(255,255,255,.5); box-shadow:0 3px 6px rgba(0,0,0,.2); cursor:pointer; }
 .calc-color:active { transform:translateY(2px); }
-.calc-colors-actions { padding:12px; background:rgba(0,0,0,.05); border-top:1px solid rgba(0,0,0,.1); display:flex; justify-content:center; }
-.calc-colors-actions button { padding:10px 24px; border-radius:10px; border:none; background:#7A736B; color:#FFF; font-weight:bold; cursor:pointer; }
-.calc-colors-actions button:active { background:#555049; }
+.calc-colors-actions { padding:12px; background:rgba(0,0,0,.05); border-top:1px solid rgba(0,0,0,.1); display:flex; justify-content:center; gap: 10px; }
+.calc-colors-actions button { padding:10px 20px; border-radius:10px; border:none; background:#7A736B; color:#FFF; font-weight:bold; cursor:pointer; }
+.calc-colors-actions button:active { opacity: 0.8; }
 
 .calc-copy-overlay { position:absolute; inset:0; z-index:100; background:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; }
 .calc-copy-overlay.open { display:flex; }
@@ -110,7 +115,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
 </style>
 </head>
 <body ontouchstart="">
-<div class="calculator-shell" id="calculator-shell">
+<input type="color" id="calc-color-picker" oninput="handleColorPicker(event)" style="position:absolute; opacity:0; pointer-events:none; width:1px; height:1px; z-index:-1;">
+<div class="calculator-shell" id="calculator-shell" onclick="if(typeof isEditMode!=='undefined' && isEditMode) handleEditModeClick('shell')">
   <div class="calc-top-bar">
     <button class="calc-close-btn" onclick="alert('Para salir de la calculadora, desliza la pantalla hacia arriba desde la parte inferior de tu iPhone.')">Salir</button>
   </div>
@@ -144,6 +150,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
     </div>
     <div class="calc-colors-actions">
       <button onclick="toggleCalculatorPalette()">Cerrar</button>
+      <button onclick="toggleEditMode()" id="edit-mode-btn" style="background:#1ABC9C;">🖌️ Modo Diseño</button>
     </div>
   </div>
   
@@ -249,6 +256,8 @@ function showEasterEgg() {
   document.getElementById('calc-value').innerHTML = `<span style="font-size:clamp(16px,5vw,26px);color:var(--calc-accent);font-weight:900;font-family:ui-rounded,'SF Pro Rounded',Arial,sans-serif;letter-spacing:0;text-align:center;display:block;padding:10px 0;">${quote}</span>`;
 }
 function handleDisplayClick() {
+  if(event) event.stopPropagation();
+  if (typeof isEditMode!=='undefined' && isEditMode) { handleEditModeClick('display'); return; }
   if (showingEasterEgg) {
     showingEasterEgg = false;
     updateCalc();
@@ -339,6 +348,8 @@ function calcBeep(){
 function toggleCalculatorSound(){CALC_SOUND=!CALC_SOUND;lsSet('hogar_calc_sound',CALC_SOUND?'1':'0');updateCalc();calcBeep();}
 
 function handleCalcKey(v){
+  if(event) event.stopPropagation();
+  if (typeof isEditMode!=='undefined' && isEditMode) { handleEditModeClick('key', v); return; }
   if(v==='colors'){toggleCalculatorPalette();return;}
   if(v==='sound'){toggleCalculatorSound();return;}
   calcBeep();
@@ -355,6 +366,7 @@ function handleCalcKey(v){
 }
 
 function toggleCalculatorPalette(){
+  if(event) event.stopPropagation();
   const p=document.getElementById('calc-colors-overlay');
   if(p){p.classList.toggle('open');}
 }
@@ -403,6 +415,105 @@ window.onload = () => {
   loadHistory();
   updateCalc();
 };
+
+let isEditMode = false;
+let currentEditType = null;
+let currentCustomTheme = null;
+
+function toggleEditMode() {
+  if(event) event.stopPropagation();
+  isEditMode = !isEditMode;
+  const btn = document.getElementById('edit-mode-btn');
+  if (isEditMode) {
+    document.body.classList.add('edit-mode');
+    btn.innerHTML = '🛑 Salir Diseño';
+    btn.style.background = '#E74C3C';
+    toggleCalculatorPalette();
+    if (!currentCustomTheme) {
+      let active = JSON.parse(localStorage.getItem('hogar_calc_theme'));
+      currentCustomTheme = { name: 'Mi Diseño' };
+      if (active) Object.assign(currentCustomTheme, active);
+      currentCustomTheme.name = 'Mi Diseño';
+    }
+    alert('🎨 MODO DISEÑO ACTIVADO\n\nToca cualquier botón, la pantalla o el fondo gris de la calculadora para cambiar su color.\n\nCuando termines, vuelve a pulsar el botón "Salir Diseño".');
+  } else {
+    document.body.classList.remove('edit-mode');
+    btn.innerHTML = '🖌️ Modo Diseño';
+    btn.style.background = '#1ABC9C';
+  }
+}
+
+function handleEditModeClick(type, val) {
+  if(event) event.stopPropagation();
+  let editType = '';
+  if (type === 'display') editType = 'display';
+  else if (type === 'shell') editType = 'shell';
+  else if (type === 'key') {
+     if (val === 'C') editType = 'clear';
+     else if (val === '%' || val === '+/-') editType = 'topOp';
+     else if (['/','*','-','+'].includes(val)) editType = 'op';
+     else if (val === '=') editType = 'accent';
+     else editType = 'num';
+  }
+  currentEditType = editType;
+  document.getElementById('calc-color-picker').click();
+}
+
+function handleColorPicker(e) {
+  if (!isEditMode || !currentEditType) return;
+  applyCustomColor(currentEditType, e.target.value);
+}
+
+function hexToRgb(hex) {
+  let c = hex.substring(1);
+  if(c.length === 3) c = c.split('').map(x=>x+x).join('');
+  return [parseInt(c.substr(0,2),16), parseInt(c.substr(2,2),16), parseInt(c.substr(4,2),16)];
+}
+
+function rgbToHex(r,g,b) {
+  return "#" + ((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+}
+
+function adjustBrightness(hex, factor) {
+  let [r,g,b] = hexToRgb(hex);
+  r = Math.max(0, Math.min(255, r * factor));
+  g = Math.max(0, Math.min(255, g * factor));
+  b = Math.max(0, Math.min(255, b * factor));
+  return rgbToHex(Math.round(r), Math.round(g), Math.round(b));
+}
+
+function applyCustomColor(type, baseHex) {
+  if(!currentCustomTheme) currentCustomTheme = {name:'Mi Diseño'};
+  
+  if (type === 'display') {
+    currentCustomTheme.display = baseHex;
+    currentCustomTheme.displayText = adjustBrightness(baseHex, 0.2);
+  } else if (type === 'shell') {
+    currentCustomTheme.shellTop = baseHex;
+    currentCustomTheme.shellBottom = adjustBrightness(baseHex, 0.9);
+  } else if (type === 'num') {
+    currentCustomTheme.numTop = baseHex;
+    currentCustomTheme.numBottom = adjustBrightness(baseHex, 0.85);
+    currentCustomTheme.numShadow = adjustBrightness(baseHex, 0.65);
+  } else if (type === 'op') {
+    currentCustomTheme.opTop = baseHex;
+    currentCustomTheme.opBottom = adjustBrightness(baseHex, 0.85);
+    currentCustomTheme.opShadow = adjustBrightness(baseHex, 0.65);
+  } else if (type === 'clear') {
+    currentCustomTheme.clearTop = baseHex;
+    currentCustomTheme.clearBottom = adjustBrightness(baseHex, 0.85);
+    currentCustomTheme.clearShadow = adjustBrightness(baseHex, 0.65);
+  } else if (type === 'topOp') {
+    currentCustomTheme.topOpTop = baseHex;
+    currentCustomTheme.topOpBottom = adjustBrightness(baseHex, 0.85);
+    currentCustomTheme.topOpShadow = adjustBrightness(baseHex, 0.65);
+  } else if (type === 'accent') {
+    currentCustomTheme.accent = baseHex;
+    currentCustomTheme.dark = adjustBrightness(baseHex, 0.75);
+  }
+  
+  setCalculatorTheme(currentCustomTheme);
+}
 </script>
 
 <script>
