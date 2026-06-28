@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#E5DED0">
+<title>Calculadora Pro</title>
+<link rel="icon" href="../logo.png" type="image/png">
+<link rel="apple-touch-icon" href="../logo.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:#f5ead8;color:#3a2810;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+
+/* Calculator base styles */
+.calculator-shell{
+  --calc-accent:#D98463;--calc-accent-dark:#B96546;--calc-shell-top:#F8F3EA;--calc-shell-bottom:#E5DED0;
+  --calc-display:#B8DDE6;--calc-display-text:#10222B;--calc-num-top:#F2F1EC;--calc-num-bottom:#C9C9BD;
+  --calc-num-shadow:#7E8177;--calc-op-top:#EFF4FA;--calc-op-bottom:#CAD2DD;--calc-op-shadow:#8490A0;
+  --calc-clear-top:#FFD8D5;--calc-clear-bottom:#F2A6A0;--calc-clear-shadow:#D3665E;
+  background:linear-gradient(180deg,var(--calc-shell-top),var(--calc-shell-bottom));
+  width:100vw; height:100vh; padding:env(safe-area-inset-top, 20px) 16px env(safe-area-inset-bottom, 20px);
+  display:flex; flex-direction:column; position:relative;
+}
+.calc-top-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding:0 4px; }
+.calc-top-bar h1 { font-size:16px; font-weight:800; color:#573722; text-transform:uppercase; letter-spacing:1px; }
+.calc-close-btn { width:32px; height:32px; background:transparent; border:none; font-size:24px; color:#573722; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+
+.calculator-display{min-height:108px;padding:14px 16px;border-radius:14px;background:var(--calc-display);border:2px solid rgba(52,35,28,.35);box-shadow:inset 0 2px 5px rgba(0,0,0,.18);text-align:right;color:var(--calc-display-text);cursor:pointer;position:relative;z-index:10;}
+.calculator-expression{min-height:24px;font-size:18px;color:color-mix(in srgb,var(--calc-display-text) 48%,transparent);overflow-wrap:anywhere}
+.calculator-value{font-size:clamp(42px,11vw,72px);line-height:1.05;font-weight:300;overflow-wrap:anywhere}
+
+.calculator-display-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:12px 2px 4px}
+.calculator-signature{width:104px;height:46px;margin-right:auto;object-fit:contain;mix-blend-mode:multiply}
+.calc-mini-key{min-height:42px;min-width:72px;padding:0 16px;border:none;border-radius:12px;font-size:20px;font-weight:900;color:#151515;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 4px 0 var(--calc-op-shadow),0 6px 10px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.9);cursor:pointer}
+.calc-mini-key.copy{font-size:13px}.calc-mini-key.sound{min-width:48px;padding:0 12px;font-size:19px}.calc-mini-key:active{transform:translateY(5px);box-shadow:0 0 0 var(--calc-op-shadow),inset 0 3px 5px rgba(0,0,0,.2)}
+
+.calc-colors-button{margin-top:12px;padding:8px 14px;border:1px solid rgba(80,40,10,.18);border-radius:10px;background:#fffaf4;color:#573722;font-size:12px;font-weight:900;cursor:pointer; align-self:flex-start;}
+.calculator-palette{display:none;gap:8px;flex-wrap:wrap;margin:12px 0 2px}.calculator-palette.open{display:flex}.calc-color{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 0 rgba(0,0,0,.16);cursor:pointer}
+
+.calculator-percent-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
+.calc-tool-button{min-height:44px;border:1px solid rgba(255,255,255,.72);border-radius:12px;color:#151515;font-size:13px;font-weight:900;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 4px 0 var(--calc-op-shadow),0 6px 9px rgba(0,0,0,.16);cursor:pointer}.calc-tool-button:active,.calc-tool-button.active{transform:translateY(4px);box-shadow:inset 0 2px 4px rgba(0,0,0,.18)}
+.calc-tool-panel{display:none;margin-top:10px;padding:12px;border:1px solid rgba(52,35,28,.18);border-radius:12px;background:rgba(255,255,255,.42)}.calc-tool-panel.open{display:block}.calc-tool-fields{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:9px}.calc-tool-field label{display:block;margin-bottom:4px;color:var(--calc-display-text);font-size:11px;font-weight:800}.calc-tool-field input{width:100%;min-height:42px;padding:8px 10px;border:1.5px solid rgba(52,35,28,.28);border-radius:9px;background:rgba(255,255,255,.82);color:#151515;font-size:18px;text-align:right}.calc-tool-calculate{width:100%;min-height:42px;margin-top:9px;border:1px solid rgba(255,255,255,.7);border-radius:10px;color:#151515;font-weight:900;background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 4px 0 var(--calc-accent-dark),0 6px 8px rgba(0,0,0,.16);cursor:pointer}.calc-tool-result{min-height:42px;margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--calc-display);color:var(--calc-display-text);font-size:13px;line-height:1.45}
+
+.calculator-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:auto; padding-top: 14px;}
+.calc-key{min-height:clamp(58px, 15vh, 80px);border:1px solid rgba(255,255,255,.72);border-radius:10px;font-size:30px;font-weight:400;color:#151515;background:linear-gradient(180deg,var(--calc-num-top),var(--calc-num-bottom));box-shadow:0 8px 0 var(--calc-num-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95);cursor:pointer}.calc-key:active{transform:translateY(8px);box-shadow:0 0 0 var(--calc-num-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.op{background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 5px 0 var(--calc-op-shadow),0 7px 10px rgba(0,0,0,.18)}.calc-key.clear{background:linear-gradient(180deg,var(--calc-clear-top),var(--calc-clear-bottom));box-shadow:0 5px 0 var(--calc-clear-shadow),0 7px 10px rgba(0,0,0,.18)}.calc-key.equals{background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 5px 0 var(--calc-accent-dark),0 7px 10px rgba(0,0,0,.2)}
+
+/* History Overlay Styles */
+.calc-history-overlay {
+  position:absolute; top:calc(env(safe-area-inset-top, 20px) + 160px); left:16px; right:16px; bottom:env(safe-area-inset-bottom, 20px);
+  background:var(--calc-display);
+  border:1px solid rgba(52,35,28,.35); border-radius:14px;
+  display:none; flex-direction:column; z-index:9;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+  overflow:hidden;
+}
+.calc-history-overlay.open { display:flex; }
+.calc-history-list {
+  flex:1; overflow-y:auto; padding:10px; display:flex; flex-direction:column; gap:8px;
+}
+.calc-history-item {
+  border-bottom:1px solid rgba(52,35,28,.15); padding:12px; text-align:right;
+  color:var(--calc-display-text); font-size:24px; position:relative;
+}
+.calc-history-item:last-child { border-bottom:none; }
+.calc-history-item .hist-expr { font-size:18px; color:color-mix(in srgb,var(--calc-display-text) 60%,transparent); border-bottom:1px solid rgba(52,35,28,.3); display:inline-block; padding-bottom:4px; margin-bottom:4px;}
+.calc-history-item .hist-date { position:absolute; top:12px; left:12px; font-size:10px; color:color-mix(in srgb,var(--calc-display-text) 50%,transparent); }
+.calc-history-item .hist-icon { position:absolute; top:12px; right:12px; font-size:14px; opacity:0.5; }
+
+.calc-history-actions {
+  display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(52,35,28,.3);
+}
+.calc-history-actions button {
+  background:#6b645b; color:white; border:none; padding:16px; font-size:15px; font-weight:800; cursor:pointer;
+}
+.calc-history-actions button:active { background:#555049; }
+
+@media(max-width:430px){
+  .calculator-signature{width:82px}.calculator-display-actions{gap:7px}
+  .calc-mini-key{min-width:58px;padding:0 11px}.calc-mini-key.sound{min-width:44px;padding:0 9px}
+  .calculator-percent-tools{gap:6px}.calc-tool-button{font-size:11px}.calculator-grid{gap:8px}
+}
+</style>
+</head>
+<body>
+<div class="calculator-shell" id="calculator-shell">
+  <div class="calc-top-bar">
+    <button class="calc-close-btn" onclick="window.location.href='../index.html'">≡</button>
+    <h1>Calculadora Pro</h1>
+  </div>
+
+  <div class="calculator-display" onclick="toggleHistory()">
+    <div class="calculator-expression" id="calc-expression"></div>
+    <div class="calculator-value" id="calc-value">0</div>
+  </div>
+
+  <div class="calc-history-overlay" id="calc-history-overlay">
+    <div class="calc-history-list" id="calc-history-list">
+      <!-- History items will be injected here -->
+    </div>
+    <div class="calc-history-actions">
+      <button onclick="clearHistory()">Borrar historial</button>
+      <button onclick="toggleHistory()">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="calculator-display-actions">
+    <img class="calculator-signature" src="../logo_elibi.jpg" alt="EliBi">
+    <button class="calc-mini-key sound" data-calc="sound" id="calc-sound" title="Activar sonido">🔇</button>
+    <button class="calc-mini-key" data-calc="back" title="Borrar último número">⌫</button>
+    <button class="calc-mini-key copy" data-calc="copy" title="Copiar número">Copiar</button>
+  </div>
+  
+  <button class="calc-colors-button" onclick="toggleCalculatorPalette()">🎨 Colores</button>
+  <div class="calculator-palette" id="calculator-palette"></div>
+  
+  <div class="calculator-percent-tools">
+    <button class="calc-tool-button" id="calc-discount-button" onclick="toggleCalcPercentTool('discount')">− % Descuento</button>
+    <button class="calc-tool-button" id="calc-increase-button" onclick="toggleCalcPercentTool('increase')">+ % Aumento</button>
+    <button class="calc-tool-button" id="calc-vat-button" onclick="toggleCalcPercentTool('vat')">Precio sin IVA</button>
+  </div>
+  
+  <div class="calc-tool-panel" id="calc-percent-panel">
+    <div class="calc-tool-fields">
+      <div class="calc-tool-field"><label for="calc-tool-amount">Importe</label><input type="text" inputmode="decimal" id="calc-tool-amount" placeholder="100,00"></div>
+      <div class="calc-tool-field"><label for="calc-tool-percent" id="calc-tool-percent-label">Porcentaje %</label><input type="text" inputmode="decimal" id="calc-tool-percent" placeholder="20"></div>
+    </div>
+    <button class="calc-tool-calculate" onclick="calculateCalcPercentTool()">Calcular</button>
+    <div class="calc-tool-result" id="calc-tool-result">Escribe el importe y el porcentaje.</div>
+  </div>
+
+  <div class="calculator-grid" id="calculator-grid">
+    <button class="calc-key clear" data-calc="C">C</button><button class="calc-key" data-calc="%">%</button><button class="calc-key" data-calc="+/-">+/−</button><button class="calc-key op" data-calc="/">÷</button>
+    <button class="calc-key" data-calc="7">7</button><button class="calc-key" data-calc="8">8</button><button class="calc-key" data-calc="9">9</button><button class="calc-key op" data-calc="*">×</button>
+    <button class="calc-key" data-calc="4">4</button><button class="calc-key" data-calc="5">5</button><button class="calc-key" data-calc="6">6</button><button class="calc-key op" data-calc="-">−</button>
+    <button class="calc-key" data-calc="1">1</button><button class="calc-key" data-calc="2">2</button><button class="calc-key" data-calc="3">3</button><button class="calc-key op" data-calc="+">＋</button>
+    <button class="calc-key" data-calc="0">0</button><button class="calc-key" data-calc=".">,</button><button class="calc-key" data-calc="back">⌫</button><button class="calc-key equals" data-calc="=">=</button>
+  </div>
+</div>
+
+<script>
+// LocalStorage helpers
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+const CALCULATOR_THEMES=[
+  {name:'Marrón pastel',accent:'#D98463',dark:'#B96546',shellTop:'#F8F3EA',shellBottom:'#E5DED0',display:'#B8DDE6',displayText:'#10222B',numTop:'#F2F1EC',numBottom:'#C9C9BD',numShadow:'#7E8177',opTop:'#EFF4FA',opBottom:'#CAD2DD',opShadow:'#8490A0',clearTop:'#FFE9E5',clearBottom:'#F2C0B7',clearShadow:'#D28D80'},
+  {name:'Rosa luminoso',accent:'#E7A1B3',dark:'#C8758A',shellTop:'#FFF3F7',shellBottom:'#F2DDE6',display:'#FFD7E5',displayText:'#4D2635',numTop:'#FFF8FA',numBottom:'#EFD9E1',numShadow:'#C7A9B4',opTop:'#F7ECFF',opBottom:'#D9C8F0',opShadow:'#A58BC3',clearTop:'#FFF1DD',clearBottom:'#F3C692',clearShadow:'#D59755'},
+  {name:'Azul agua',accent:'#7CB9C8',dark:'#4E8794',shellTop:'#EFFBFC',shellBottom:'#D6ECF0',display:'#BDECF2',displayText:'#173942',numTop:'#F5FBFA',numBottom:'#D5E5E1',numShadow:'#8FA8A3',opTop:'#E7F2FF',opBottom:'#BFD5EA',opShadow:'#799AB6',clearTop:'#FFE1DF',clearBottom:'#F0B1AA',clearShadow:'#C77670'},
+  {name:'Menta',accent:'#94D1B0',dark:'#5EA87E',shellTop:'#F1FFF7',shellBottom:'#DCEFE5',display:'#C9F2DC',displayText:'#153A27',numTop:'#FAFFF8',numBottom:'#DDEADC',numShadow:'#93A98F',opTop:'#EAF6F0',opBottom:'#BED9CA',opShadow:'#79A089',clearTop:'#FFE7CE',clearBottom:'#F1BF82',clearShadow:'#C88744'},
+  {name:'Lavanda',accent:'#B8A7E8',dark:'#8974C9',shellTop:'#F7F3FF',shellBottom:'#E5DDF5',display:'#DED5FF',displayText:'#2E2450',numTop:'#FCFAFF',numBottom:'#DDD7E8',numShadow:'#9A91A8',opTop:'#EEF0FF',opBottom:'#CBD0EE',opShadow:'#858CBD',clearTop:'#FFE0EC',clearBottom:'#EFB0C9',clearShadow:'#C57696'},
+  {name:'Limón claro',accent:'#F3D266',dark:'#C7A326',shellTop:'#FFFBEA',shellBottom:'#EEE4BA',display:'#FFF1A9',displayText:'#493D10',numTop:'#FFFDF2',numBottom:'#E8E1C9',numShadow:'#A89B78',opTop:'#EFF8DD',opBottom:'#D0E2A5',opShadow:'#91A35F',clearTop:'#FFDCD2',clearBottom:'#EEAA95',clearShadow:'#C97860'},
+  {name:'Marrón oscuro',accent:'#76513E',dark:'#3F2A21',shellTop:'#5B4338',shellBottom:'#2E211C',display:'#C9B39F',displayText:'#251811',numTop:'#A9856F',numBottom:'#6D4E3E',numShadow:'#2B1C16',opTop:'#8A6B59',opBottom:'#563C30',opShadow:'#241711',clearTop:'#C78E72',clearBottom:'#8F5943',clearShadow:'#4A2A20'},
+  {name:'Marrón claro',accent:'#C9966B',dark:'#946442',shellTop:'#FFF4E8',shellBottom:'#DEC4AA',display:'#F2D7BC',displayText:'#4A2E1F',numTop:'#FFF9F1',numBottom:'#D9BFA6',numShadow:'#9B785C',opTop:'#F3E3D2',opBottom:'#C9A98A',opShadow:'#87664D',clearTop:'#FFE1CF',clearBottom:'#DCA889',clearShadow:'#A36E50'},
+  {name:'Blanco',accent:'#D8D8D8',dark:'#9B9B9B',shellTop:'#FFFFFF',shellBottom:'#EAEAEA',display:'#F7F7F7',displayText:'#181818',numTop:'#FFFFFF',numBottom:'#E8E8E8',numShadow:'#A6A6A6',opTop:'#F8F8F8',opBottom:'#DADADA',opShadow:'#999999',clearTop:'#FFFFFF',clearBottom:'#E3E3E3',clearShadow:'#A0A0A0'}
+];
+
+let CALC_CURRENT='0', CALC_PREVIOUS=null, CALC_OPERATOR='', CALC_JUST_EVALUATED=false;
+let CALC_SOUND=true, CALC_AUDIO=null;
+let CALC_PERCENT_TOOL='';
+let CALC_HISTORY = [];
+
+function formatCalcValue(value){const n=Number(value);return Number.isFinite(n)?String(Math.round(n*100000000)/100000000).replace('.',','):'Error';}
+
+function updateCalc(){
+  const value=document.getElementById('calc-value'),expression=document.getElementById('calc-expression'),sound=document.getElementById('calc-sound');
+  if(value)value.textContent=CALC_CURRENT.replace('.',',');
+  if(expression)expression.textContent=CALC_PREVIOUS!==null&&CALC_OPERATOR?`${formatCalcValue(CALC_PREVIOUS)} ${CALC_OPERATOR.replace('*','×').replace('/','÷')}`:'';
+  if(sound){sound.textContent=CALC_SOUND?'🔊':'🔇';sound.title=CALC_SOUND?'Desactivar sonido':'Activar sonido';}
+}
+
+function calculateCalcValues(){
+  const a=Number(CALC_PREVIOUS),b=Number(CALC_CURRENT);let result=b;
+  let opSymbol = CALC_OPERATOR;
+  if(CALC_OPERATOR==='+')result=a+b;if(CALC_OPERATOR==='-')result=a-b;
+  if(CALC_OPERATOR==='*'){result=a*b; opSymbol = '×';}
+  if(CALC_OPERATOR==='/'){result=b===0?NaN:a/b; opSymbol = '÷';}
+  
+  // Save to history
+  if (CALC_PREVIOUS !== null && CALC_OPERATOR) {
+    saveToHistory(formatCalcValue(a), opSymbol, formatCalcValue(b), formatCalcValue(result));
+  }
+  
+  CALC_CURRENT=formatCalcValue(result).replace(',','.');CALC_PREVIOUS=null;CALC_OPERATOR='';CALC_JUST_EVALUATED=true;
+}
+
+function saveToHistory(a, op, b, res) {
+  const date = new Date().toLocaleDateString('es-ES', {day: 'numeric', month: 'short', hour:'2-digit', minute:'2-digit'}).toUpperCase();
+  CALC_HISTORY.unshift({ a, op, b, res, date });
+  if (CALC_HISTORY.length > 50) CALC_HISTORY.pop();
+  lsSet('hogar_calc_history', JSON.stringify(CALC_HISTORY));
+  renderHistory();
+}
+
+function loadHistory() {
+  try {
+    CALC_HISTORY = JSON.parse(lsGet('hogar_calc_history')) || [];
+  } catch(e) { CALC_HISTORY = []; }
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById('calc-history-list');
+  if (!list) return;
+  if (CALC_HISTORY.length === 0) {
+    list.innerHTML = '<div style="text-align:center; padding: 20px; color:rgba(0,0,0,0.4); font-weight:800; font-size:14px;">No hay operaciones guardadas</div>';
+    return;
+  }
+  list.innerHTML = CALC_HISTORY.map(h => `
+    <div class="calc-history-item">
+      <div class="hist-date">${h.date}</div>
+      <div class="hist-icon">💬</div>
+      <div class="hist-expr">${h.a} ${h.op} ${h.b}</div>
+      <div>= ${h.res}</div>
+    </div>
+  `).join('');
+}
+
+function toggleHistory() {
+  const ov = document.getElementById('calc-history-overlay');
+  ov.classList.toggle('open');
+}
+
+function clearHistory() {
+  CALC_HISTORY = [];
+  lsSet('hogar_calc_history', '[]');
+  renderHistory();
+  toggleHistory();
+}
+
+function calcBeep(){
+  if(!CALC_SOUND)return;
+  try{
+    const Ctx=window.AudioContext||window.webkitAudioContext;
+    CALC_AUDIO=CALC_AUDIO||new Ctx();
+    const osc=CALC_AUDIO.createOscillator(),gain=CALC_AUDIO.createGain(),now=CALC_AUDIO.currentTime;
+    osc.type='sine';osc.frequency.setValueAtTime(520,now);osc.frequency.exponentialRampToValueAtTime(230,now+.045);
+    gain.gain.setValueAtTime(.035,now);gain.gain.exponentialRampToValueAtTime(.001,now+.05);
+    osc.connect(gain);gain.connect(CALC_AUDIO.destination);
+    osc.start(now);osc.stop(now+.055);
+  }catch(e){}
+}
+function toggleCalculatorSound(){CALC_SOUND=!CALC_SOUND;lsSet('hogar_calc_sound',CALC_SOUND?'1':'0');updateCalc();calcBeep();}
+
+function handleCalcKey(v){
+  if(v==='sound'){toggleCalculatorSound();return;}
+  calcBeep();
+  if(v==='copy'){navigator.clipboard?.writeText(CALC_CURRENT.replace('.',','));return;}
+  if(/^\d$/.test(v)){CALC_CURRENT=CALC_CURRENT==='0'||CALC_JUST_EVALUATED?v:CALC_CURRENT+v;CALC_JUST_EVALUATED=false;}
+  else if(v==='.'){if(CALC_JUST_EVALUATED)CALC_CURRENT='0';if(!CALC_CURRENT.includes('.'))CALC_CURRENT+='.';CALC_JUST_EVALUATED=false;}
+  else if(v==='C'){CALC_CURRENT='0';CALC_PREVIOUS=null;CALC_OPERATOR='';CALC_JUST_EVALUATED=false;}
+  else if(v==='back')CALC_CURRENT=CALC_CURRENT.length>1?CALC_CURRENT.slice(0,-1):'0';
+  else if(v==='+/-')CALC_CURRENT=String((Number(CALC_CURRENT)||0)*-1);
+  else if(v==='%'){const p=(Number(CALC_CURRENT)||0)/100;CALC_CURRENT=String(CALC_PREVIOUS!==null&&['+','-'].includes(CALC_OPERATOR)?Number(CALC_PREVIOUS)*p:p);}
+  else if(['+','-','*','/'].includes(v)){if(CALC_PREVIOUS!==null&&CALC_OPERATOR&&!CALC_JUST_EVALUATED)calculateCalcValues();CALC_PREVIOUS=Number(CALC_CURRENT);CALC_OPERATOR=v;CALC_JUST_EVALUATED=true;}
+  else if(v==='='&&CALC_PREVIOUS!==null&&CALC_OPERATOR)calculateCalcValues();
+  updateCalc();
+}
+
+function toggleCalculatorPalette(){document.getElementById('calculator-palette')?.classList.toggle('open');}
+function setCalculatorTheme(theme){
+  const shell=document.getElementById('calculator-shell');if(!shell||!theme)return;
+  [['accent','--calc-accent'],['dark','--calc-accent-dark'],['shellTop','--calc-shell-top'],['shellBottom','--calc-shell-bottom'],['display','--calc-display'],['displayText','--calc-display-text'],['numTop','--calc-num-top'],['numBottom','--calc-num-bottom'],['numShadow','--calc-num-shadow'],['opTop','--calc-op-top'],['opBottom','--calc-op-bottom'],['opShadow','--calc-op-shadow'],['clearTop','--calc-clear-top'],['clearBottom','--calc-clear-bottom'],['clearShadow','--calc-clear-shadow']].forEach(([key,prop])=>shell.style.setProperty(prop,theme[key]));
+  lsSet('hogar_calc_theme',JSON.stringify(theme));
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', theme.shellBottom);
+}
+
+function toggleCalcPercentTool(tool){
+  const panel=document.getElementById('calc-percent-panel'),result=document.getElementById('calc-tool-result'),label=document.getElementById('calc-tool-percent-label');
+  CALC_PERCENT_TOOL=panel.classList.contains('open')&&CALC_PERCENT_TOOL===tool?'':tool;panel.classList.toggle('open',Boolean(CALC_PERCENT_TOOL));
+  ['discount','increase','vat'].forEach(k=>document.getElementById(`calc-${k}-button`)?.classList.toggle('active',CALC_PERCENT_TOOL===k));
+  if(label)label.textContent=CALC_PERCENT_TOOL==='vat'?'IVA %':'Porcentaje %';
+  if(result)result.textContent=CALC_PERCENT_TOOL==='vat'?'Escribe el precio con IVA y el porcentaje de IVA.':CALC_PERCENT_TOOL==='increase'?'Escribe el importe y el porcentaje que quieres sumar.':'Escribe el importe y el porcentaje que quieres quitar.';
+}
+function calcToolNumber(value){const n=Number(String(value||'').trim().replace(/\s/g,'').replace(',','.'));return Number.isFinite(n)?n:NaN;}
+function calcMoney(value){return Number(value).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function calculateCalcPercentTool(){
+  const amount=calcToolNumber(document.getElementById('calc-tool-amount')?.value),percent=calcToolNumber(document.getElementById('calc-tool-percent')?.value),result=document.getElementById('calc-tool-result');
+  if(!result||!CALC_PERCENT_TOOL)return;if(!Number.isFinite(amount)||!Number.isFinite(percent)||amount<0||percent<0){result.textContent='Introduce un importe y un porcentaje válidos.';return;}calcBeep();
+  if(CALC_PERCENT_TOOL==='discount'){const removed=amount*percent/100;result.innerHTML=`<strong>Resultado: ${calcMoney(amount-removed)} €</strong><br>Se quitan ${calcMoney(removed)} € (${formatCalcValue(percent)} %).`;return;}
+  if(CALC_PERCENT_TOOL==='increase'){const added=amount*percent/100;result.innerHTML=`<strong>Resultado: ${calcMoney(amount+added)} €</strong><br>Se suman ${calcMoney(added)} € (${formatCalcValue(percent)} %).`;return;}
+  const net=amount/(1+percent/100);result.innerHTML=`<strong>Sin IVA: ${calcMoney(net)} €</strong><br>IVA incluido: ${calcMoney(amount-net)} € (${formatCalcValue(percent)} %).`;
+}
+
+// Init
+window.onload = () => {
+  CALC_SOUND=lsGet('hogar_calc_sound')==='1';
+  const palette=document.getElementById('calculator-palette');
+  if(palette&&!palette.innerHTML)palette.innerHTML=CALCULATOR_THEMES.map((theme,index)=>`<button class="calc-color" title="${theme.name}" style="background:linear-gradient(135deg,${theme.accent},${theme.display},${theme.opBottom})" onclick="setCalculatorTheme(CALCULATOR_THEMES[${index}])"></button>`).join('');
+  try{const saved=JSON.parse(lsGet('hogar_calc_theme')||'null');if(saved)setCalculatorTheme(saved);}catch(e){}
+  document.querySelectorAll('#calculator-grid .calc-key,.calculator-display-actions .calc-mini-key').forEach(button=>button.onclick=()=>handleCalcKey(button.dataset.calc));
+  loadHistory();
+  updateCalc();
+};
+</script>
+</body>
+</html>
