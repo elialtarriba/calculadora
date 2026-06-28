@@ -73,7 +73,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:activ
 #calc-discount-button{--calc-tool-btn-top:color-mix(in srgb,var(--calc-tool-btn-discount,#FFF) 60%,#FFF);--calc-tool-btn-bottom:var(--calc-tool-btn-discount,rgba(255,255,255,.5));--calc-tool-btn-shadow:color-mix(in srgb,var(--calc-tool-btn-discount,rgba(0,0,0,.1)) 50%,#000);}
 #calc-increase-button{--calc-tool-btn-top:color-mix(in srgb,var(--calc-tool-btn-increase,#FFF) 60%,#FFF);--calc-tool-btn-bottom:var(--calc-tool-btn-increase,rgba(255,255,255,.5));--calc-tool-btn-shadow:color-mix(in srgb,var(--calc-tool-btn-increase,rgba(0,0,0,.1)) 50%,#000);}
 #calc-vat-button{--calc-tool-btn-top:color-mix(in srgb,var(--calc-tool-btn-vat,#FFF) 60%,#FFF);--calc-tool-btn-bottom:var(--calc-tool-btn-vat,rgba(255,255,255,.5));--calc-tool-btn-shadow:color-mix(in srgb,var(--calc-tool-btn-vat,rgba(0,0,0,.1)) 50%,#000);}
-.calc-tool-panel{display:none;margin-top:10px;padding:12px;border:1px solid rgba(52,35,28,.18);border-radius:12px;background:rgba(255,255,255,.42)}.calc-tool-panel.open{display:block}.calc-tool-fields{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:9px}.calc-tool-field label{display:block;margin-bottom:4px;color:var(--calc-display-text);font-size:11px;font-weight:600}.calc-tool-field input{width:100%;min-height:42px;padding:8px 10px;border:1.5px solid rgba(52,35,28,.28);border-radius:9px;background:rgba(255,255,255,.82);color:#151515;font-size:18px;text-align:right}.calc-tool-calculate{width:100%;min-height:42px;margin-top:9px;border:1px solid rgba(255,255,255,.7);border-radius:10px;color:#151515;font-weight:600;background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 4px 0 var(--calc-accent-dark),0 6px 8px rgba(0,0,0,.16);cursor:pointer}.calc-tool-result{min-height:42px;margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--calc-display);color:var(--calc-display-text);font-size:13px;line-height:1.45}
+.calc-tool-panel{display:none;margin-top:10px;padding:12px;border:1px solid rgba(52,35,28,.18);border-radius:12px;background:rgba(255,255,255,.42)}.calc-tool-panel.open{display:block}.calc-tool-fields{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:9px}.calc-tool-field label{display:block;margin-bottom:4px;color:var(--calc-display-text);font-size:11px;font-weight:600}.calc-tool-field input{width:100%;min-height:42px;padding:8px 10px;border:1.5px solid rgba(52,35,28,.28);border-radius:9px;background:var(--calc-tool-inputs, rgba(255,255,255,.82));color:#151515;font-size:18px;text-align:right; cursor:pointer}.calc-tool-calculate{position:relative;overflow:hidden;width:100%;min-height:42px;margin-top:9px;border:1px solid rgba(255,255,255,.7);border-radius:10px;color:#151515;font-weight:600;background:linear-gradient(180deg,var(--calc-tool-calc-top,color-mix(in srgb,var(--calc-tool-calc-btn,var(--calc-accent)) 55%,#fff 45%)),var(--calc-tool-calc-bottom,var(--calc-tool-calc-btn,var(--calc-accent))));box-shadow:0 8px 0 var(--calc-tool-calc-shadow,var(--calc-accent-dark)),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95);cursor:pointer;--calc-tool-calc-top:color-mix(in srgb,var(--calc-tool-calc-btn,var(--calc-accent)) 60%,#FFF);--calc-tool-calc-bottom:var(--calc-tool-calc-btn,var(--calc-accent));--calc-tool-calc-shadow:color-mix(in srgb,var(--calc-tool-calc-btn,var(--calc-accent-dark)) 50%,#000);}.calc-tool-calculate:active{transform:translateY(8px);box-shadow:0 0 0 var(--calc-tool-calc-shadow,var(--calc-accent-dark)),inset 0 3px 5px rgba(0,0,0,.2)}.calc-tool-result{min-height:42px;margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--calc-display);color:var(--calc-display-text);font-size:13px;line-height:1.45}
 
 .calculator-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px; padding-top: 10px;}
 .calc-key{position:relative;overflow:hidden;min-height:clamp(58px, 15vh, 80px);border:1px solid rgba(255,255,255,.72);border-radius:10px;font-size:30px;font-weight:400;color:#151515;background:linear-gradient(180deg,var(--calc-num-top),var(--calc-num-bottom));box-shadow:0 8px 0 var(--calc-num-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95);cursor:pointer}.calc-key::before{content:'';position:absolute;top:12%;left:16%;right:16%;bottom:12%;border-radius:40%;box-shadow:inset 0 4px 6px rgba(0,0,0,.08),inset 0 -4px 6px rgba(255,255,255,.3);background:radial-gradient(ellipse at center,rgba(0,0,0,.04) 0%,transparent 70%);pointer-events:none;transition:opacity .15s}.calc-key:active{transform:translateY(8px);box-shadow:0 0 0 var(--calc-num-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key:active::before{opacity:0.4}.calc-key.op{background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 8px 0 var(--calc-op-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.clear{background:linear-gradient(180deg,var(--calc-clear-top),var(--calc-clear-bottom));box-shadow:0 8px 0 var(--calc-clear-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.top-op{background:linear-gradient(180deg,var(--calc-top-op-top, var(--calc-clear-top)),var(--calc-top-op-bottom, var(--calc-clear-bottom)));box-shadow:0 8px 0 var(--calc-top-op-shadow, var(--calc-clear-shadow)),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.equals{background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 8px 0 var(--calc-accent-dark),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}
@@ -126,7 +126,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:activ
       <div style="font-size:12px; font-weight:800; text-transform:uppercase; opacity:0.9;">🎨 Editando:</div>
       <div id="edit-mode-target" style="font-size:16px; font-weight:900;">Fondo</div>
     </div>
-    <div style="display:flex; align-items:center; gap:12px;"><button onclick="saveCustomTheme()" style="background:#fff; color:#4A90E2; border:none; padding:8px 12px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">💾 Guardar</button><input type="color" id="edit-color-picker" oninput="if(isEditMode) applyCustomColor(currentEditType, this.value)" style="width:48px; height:48px; border:3px solid white; border-radius:10px; background:white; cursor:pointer; padding:0;"></div>
+    <div style="display:flex; align-items:center; gap:12px;"><button onclick="deleteCurrentCustomTheme()" style="background:#ff4d4d; color:white; border:none; padding:8px 12px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">🗑️ Borrar</button><button onclick="saveCustomTheme()" style="background:#fff; color:#4A90E2; border:none; padding:8px 12px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">💾 Guardar</button><input type="color" id="edit-color-picker" oninput="if(isEditMode) applyCustomColor(currentEditType, this.value)" style="width:48px; height:48px; border:3px solid white; border-radius:10px; background:white; cursor:pointer; padding:0;"></div>
   </div>
 
   <div class="calculator-display" onclick="handleDisplayClick()">
@@ -173,9 +173,9 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:activ
   </div>
 
   <div class="calculator-percent-tools" id="calc-tool-panel" onclick="if(typeof isEditMode!=='undefined' && isEditMode) handleEditModeSelect('toolpanel')">
-    <button class="calc-tool-button" id="calc-discount-button" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('toolbtn_discount'); } else toggleCalcPercentTool('discount')">- % Descuento</button>
-    <button class="calc-tool-button" id="calc-increase-button" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('toolbtn_increase'); } else toggleCalcPercentTool('increase')">+ % Aumento</button>
-    <button class="calc-tool-button" id="calc-vat-button" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('toolbtn_vat'); } else toggleCalcPercentTool('vat')">Precio sin IVA</button>
+    <button class="calc-tool-button" id="calc-discount-button" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('toolbtn_discount'); } toggleCalcPercentTool('discount')">- % Descuento</button>
+    <button class="calc-tool-button" id="calc-increase-button" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('toolbtn_increase'); } toggleCalcPercentTool('increase')">+ % Aumento</button>
+    <button class="calc-tool-button" id="calc-vat-button" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('toolbtn_vat'); } toggleCalcPercentTool('vat')">Precio sin IVA</button>
   </div>
   
   <div class="calc-tool-panel" id="calc-percent-panel">
@@ -183,7 +183,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:activ
       <div class="calc-tool-field"><label for="calc-tool-amount">Importe</label><input type="text" inputmode="decimal" id="calc-tool-amount" placeholder="100,00"></div>
       <div class="calc-tool-field"><label for="calc-tool-percent" id="calc-tool-percent-label">Porcentaje %</label><input type="text" inputmode="decimal" id="calc-tool-percent" placeholder="20"></div>
     </div>
-    <button class="calc-tool-calculate" onclick="calculateCalcPercentTool()">Calcular</button>
+    <button class="calc-tool-calculate" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('toolpanel_calc_btn'); } else calculateCalcPercentTool()">Calcular</button>
     <div class="calc-tool-result" id="calc-tool-result">Escribe el importe y el porcentaje.</div>
   </div>
 
@@ -194,7 +194,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:activ
     <button class="calc-key" data-calc="1">1</button><button class="calc-key" data-calc="2">2</button><button class="calc-key" data-calc="3">3</button><button class="calc-key op" data-calc="+">＋</button>
     <button class="calc-key" data-calc="0">0</button><button class="calc-key" data-calc=".">,</button><button class="calc-key" data-calc="back">⌫</button><button class="calc-key equals" data-calc="=">=</button>
   </div>
-  <div class="app-version" style="position:absolute; bottom:16px; right:16px; font-size:14px; font-weight:900; color:var(--calc-display-text); opacity:0.35; pointer-events:none;">v27</div>
+  <div class="app-version" style="position:absolute; bottom:16px; right:16px; font-size:14px; font-weight:900; color:var(--calc-display-text); opacity:0.35; pointer-events:none;">v28</div>
 </div>
 
 <script>
@@ -402,6 +402,10 @@ function setCalculatorTheme(theme){
 
   if (theme.toolPanel) root.style.setProperty('--calc-tool-panel', theme.toolPanel);
   else root.style.removeProperty('--calc-tool-panel');
+  if (theme.toolInputs) root.style.setProperty('--calc-tool-inputs', theme.toolInputs);
+  else root.style.removeProperty('--calc-tool-inputs');
+  if (theme.toolCalcBtn) root.style.setProperty('--calc-tool-calc-btn', theme.toolCalcBtn);
+  else root.style.removeProperty('--calc-tool-calc-btn');
 
   if (theme.toolBtnDiscount) root.style.setProperty('--calc-tool-btn-discount', theme.toolBtnDiscount); else root.style.removeProperty('--calc-tool-btn-discount');
   if (theme.toolBtnIncrease) root.style.setProperty('--calc-tool-btn-increase', theme.toolBtnIncrease); else root.style.removeProperty('--calc-tool-btn-increase');
@@ -482,14 +486,45 @@ function getCustomThemes() { try { return JSON.parse(localStorage.getItem('hogar
 function setCustomThemes(themes) { localStorage.setItem('hogar_calc_custom_themes', JSON.stringify(themes)); }
 function saveCustomTheme() {
   if (!currentCustomTheme) return;
+  const themes = getCustomThemes();
+  if (currentCustomTheme.id) {
+    if (confirm('¿Deseas ACTUALIZAR el diseño existente? (Pulsa Cancelar para guardarlo como una copia nueva)')) {
+      const idx = themes.findIndex(t => t.id === currentCustomTheme.id);
+      if (idx !== -1) {
+        themes[idx] = JSON.parse(JSON.stringify(currentCustomTheme));
+        setCustomThemes(themes);
+        renderThemes();
+        alert('Diseño actualizado correctamente.');
+        return;
+      }
+    } else {
+      delete currentCustomTheme.id;
+    }
+  }
   const name = prompt('Nombre para tu diseño:');
   if (!name) return;
   currentCustomTheme.name = name;
-  const themes = getCustomThemes();
+  currentCustomTheme.id = Date.now().toString();
   themes.push(JSON.parse(JSON.stringify(currentCustomTheme)));
   setCustomThemes(themes);
   renderThemes();
   alert('Diseño "' + name + '" guardado correctamente.');
+}
+function deleteCurrentCustomTheme() {
+  if (!currentCustomTheme || !currentCustomTheme.id) {
+    alert('Este diseño aún no está guardado, no se puede borrar.');
+    return;
+  }
+  if(confirm('¿Estás seguro de que quieres borrar este diseño guardado?')) {
+    const themes = getCustomThemes();
+    const idx = themes.findIndex(t => t.id === currentCustomTheme.id);
+    if (idx !== -1) {
+      themes.splice(idx, 1);
+      setCustomThemes(themes);
+      renderThemes();
+      toggleEditMode();
+    }
+  }
 }
 function deleteCustomTheme(index) {
   if(confirm('¿Estás seguro de que quieres borrar este diseño guardado?')) {
@@ -571,7 +606,9 @@ function handleEditModeSelect(type, val) {
   let name = '';
   if (type === 'display') { editType = 'display'; name = 'Pantalla'; }
   else if (type === 'shell') { editType = 'shell'; name = 'Fondo'; }
-  else if (type === 'toolpanel') { editType = 'toolpanel'; name = 'Caja Descuento'; }
+  else if (type === 'toolpanel') { editType = 'toolpanel'; name = 'Fondo Panel Descuento'; }
+  else if (type === 'toolpanel_inputs') { editType = 'toolpanel_inputs'; name = 'Cajas de Texto'; }
+  else if (type === 'toolpanel_calc_btn') { editType = 'toolpanel_calc_btn'; name = 'Botón Calcular'; }
   else if (type === 'toolbtn_discount') { editType = 'toolbtn_discount'; name = 'Botón Descuento'; }
   else if (type === 'toolbtn_increase') { editType = 'toolbtn_increase'; name = 'Botón Aumento'; }
   else if (type === 'toolbtn_vat') { editType = 'toolbtn_vat'; name = 'Botón IVA'; }
@@ -616,6 +653,10 @@ function applyCustomColor(type, baseHex) {
     currentCustomTheme.shellBottom = adjustBrightness(baseHex, 0.9);
   } else if (type === 'toolpanel') {
     currentCustomTheme.toolPanel = baseHex;
+  } else if (type === 'toolpanel_inputs') {
+    currentCustomTheme.toolInputs = baseHex;
+  } else if (type === 'toolpanel_calc_btn') {
+    currentCustomTheme.toolCalcBtn = baseHex;
   } else if (type === 'toolbtn_discount') {
     currentCustomTheme.toolBtnDiscount = baseHex;
   } else if (type === 'toolbtn_increase') {
