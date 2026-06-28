@@ -22,14 +22,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
   --calc-num-shadow:#7E8177;--calc-op-top:#EFF4FA;--calc-op-bottom:#CAD2DD;--calc-op-shadow:#8490A0;
   --calc-clear-top:#FFD8D5;--calc-clear-bottom:#F2A6A0;--calc-clear-shadow:#D3665E;
   background:linear-gradient(180deg,var(--calc-shell-top),var(--calc-shell-bottom));
-  width:100vw; height:100vh; padding:env(safe-area-inset-top, 20px) 16px env(safe-area-inset-bottom, 20px);
-  display:flex; flex-direction:column; position:relative;
-}
-body.edit-mode .calculator-shell { box-shadow: inset 0 0 0 4px #1ABC9C; }
+body.edit-mode .calculator-shell { box-shadow: inset 0 0 0 4px #E74C3C; }
 body.edit-mode .calc-key::after, body.edit-mode .calculator-display::after, body.edit-mode .calculator-shell::after {
-  content:''; position:absolute; inset:0; border:2px dashed #1ABC9C; border-radius:inherit; opacity:0; pointer-events:none; z-index:99; transition:opacity .1s;
+  content:''; position:absolute; inset:0; border:2px dashed #E74C3C; border-radius:inherit; opacity:0; pointer-events:none; z-index:99; transition:opacity .1s;
 }
 body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:active::after { opacity:1; }
+.edit-mode-picker { position:absolute; top:0; left:0; width:100%; height:100%; opacity:0.001; cursor:pointer; z-index:100; border:none; padding:0; margin:0; }
+.calculator-shell > .edit-mode-picker { z-index:0; }
+.edit-mode-banner { display:none; background:#E74C3C; color:#FFF; font-weight:800; font-size:12px; padding:6px 12px; border-radius:20px; text-transform:uppercase; letter-spacing:1px; margin-right:auto; margin-left:10px; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { opacity:1; } 50% { opacity:0.6; } 100% { opacity:1; } }
 .calc-top-bar { display:flex; align-items:center; justify-content:space-between; margin-top:10px; margin-bottom:12px; padding:0 4px; }
 .calc-top-bar h1 { font-size:16px; font-weight:800; color:#573722; text-transform:uppercase; letter-spacing:1px; }
 .calc-close-btn{display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;min-height:28px;line-height:1;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));border:1px solid rgba(255,255,255,.5);border-radius:14px;font-size:12px;font-weight:800;color:#151515;box-shadow:0 3px 0 var(--calc-op-shadow),0 4px 6px rgba(0,0,0,.15);cursor:pointer;transition:all .1s}
@@ -115,10 +116,10 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:activ
 </style>
 </head>
 <body ontouchstart="">
-<input type="color" id="calc-color-picker" oninput="handleColorPicker(event)" style="position:absolute; opacity:0; pointer-events:none; width:1px; height:1px; z-index:-1;">
-<div class="calculator-shell" id="calculator-shell" onclick="if(typeof isEditMode!=='undefined' && isEditMode) handleEditModeClick('shell')">
+<div class="calculator-shell" id="calculator-shell">
   <div class="calc-top-bar">
     <button class="calc-close-btn" onclick="alert('Para salir de la calculadora, desliza la pantalla hacia arriba desde la parte inferior de tu iPhone.')">Salir</button>
+    <div class="edit-mode-banner" id="edit-mode-banner">🎨 Diseño</div>
   </div>
 
   <div class="calculator-display" onclick="handleDisplayClick()">
@@ -256,7 +257,7 @@ function showEasterEgg() {
   document.getElementById('calc-value').innerHTML = `<span style="font-size:clamp(16px,5vw,26px);color:var(--calc-accent);font-weight:900;font-family:ui-rounded,'SF Pro Rounded',Arial,sans-serif;letter-spacing:0;text-align:center;display:block;padding:10px 0;">${quote}</span>`;
 }
 function handleDisplayClick() {
-  if (typeof isEditMode!=='undefined' && isEditMode) { handleEditModeClick('display'); return; }
+  if (typeof isEditMode!=='undefined' && isEditMode) return;
   if (showingEasterEgg) {
     showingEasterEgg = false;
     updateCalc();
@@ -347,7 +348,7 @@ function calcBeep(){
 function toggleCalculatorSound(){CALC_SOUND=!CALC_SOUND;lsSet('hogar_calc_sound',CALC_SOUND?'1':'0');updateCalc();calcBeep();}
 
 function handleCalcKey(v){
-  if (typeof isEditMode!=='undefined' && isEditMode) { handleEditModeClick('key', v); return; }
+  if (typeof isEditMode!=='undefined' && isEditMode) return;
   if(v==='colors'){toggleCalculatorPalette();return;}
   if(v==='sound'){toggleCalculatorSound();return;}
   calcBeep();
@@ -414,54 +415,55 @@ window.onload = () => {
 };
 
 let isEditMode = false;
-let currentEditType = null;
 let currentCustomTheme = null;
-let editClickHandled = false;
 
 function toggleEditMode() {
   isEditMode = !isEditMode;
   const btn = document.getElementById('edit-mode-btn');
+  const banner = document.getElementById('edit-mode-banner');
   if (isEditMode) {
     document.body.classList.add('edit-mode');
     btn.innerHTML = '🛑 Salir Diseño';
     btn.style.background = '#E74C3C';
+    banner.style.display = 'block';
     toggleCalculatorPalette();
+    
+    document.querySelectorAll('.calc-key, .calculator-display, .calculator-shell').forEach(el => {
+      let type = '';
+      if (el.classList.contains('calculator-display')) type = 'display';
+      else if (el.classList.contains('calculator-shell')) type = 'shell';
+      else {
+        const val = el.getAttribute('data-calc');
+        if (val === 'C') type = 'clear';
+        else if (val === '%' || val === '+/-') type = 'topOp';
+        else if (['/','*','-','+'].includes(val)) type = 'op';
+        else if (val === '=') type = 'accent';
+        else type = 'num';
+      }
+      const picker = document.createElement('input');
+      picker.type = 'color';
+      picker.className = 'edit-mode-picker';
+      picker.oninput = (e) => { applyCustomColor(type, e.target.value); };
+      if (type === 'shell') el.insertBefore(picker, el.firstChild);
+      else el.appendChild(picker);
+    });
+
     if (!currentCustomTheme) {
       let active = JSON.parse(localStorage.getItem('hogar_calc_theme'));
       currentCustomTheme = { name: 'Mi Diseño' };
       if (active) Object.assign(currentCustomTheme, active);
       currentCustomTheme.name = 'Mi Diseño';
     }
-    alert('🎨 MODO DISEÑO ACTIVADO\n\nToca cualquier botón, la pantalla o el fondo gris de la calculadora para cambiar su color.\n\nCuando termines, vuelve a pulsar el botón "Salir Diseño".');
+    setTimeout(() => {
+      alert('🎨 MODO DISEÑO ACTIVADO\\n\\nToca cualquier botón o el fondo de la calculadora. ¡Verás que ahora se abre directamente la paleta de colores de tu iPhone!\\n\\nCuando termines, vuelve a abrir los temas y pulsa "Salir Diseño".');
+    }, 150);
   } else {
     document.body.classList.remove('edit-mode');
     btn.innerHTML = '🖌️ Modo Diseño';
     btn.style.background = '#1ABC9C';
+    banner.style.display = 'none';
+    document.querySelectorAll('.edit-mode-picker').forEach(el => el.remove());
   }
-}
-
-function handleEditModeClick(type, val) {
-  if (editClickHandled) return;
-  editClickHandled = true;
-  setTimeout(() => { editClickHandled = false; }, 100);
-
-  let editType = '';
-  if (type === 'display') editType = 'display';
-  else if (type === 'shell') editType = 'shell';
-  else if (type === 'key') {
-     if (val === 'C') editType = 'clear';
-     else if (val === '%' || val === '+/-') editType = 'topOp';
-     else if (['/','*','-','+'].includes(val)) editType = 'op';
-     else if (val === '=') editType = 'accent';
-     else editType = 'num';
-  }
-  currentEditType = editType;
-  document.getElementById('calc-color-picker').click();
-}
-
-function handleColorPicker(e) {
-  if (!isEditMode || !currentEditType) return;
-  applyCustomColor(currentEditType, e.target.value);
 }
 
 function hexToRgb(hex) {
