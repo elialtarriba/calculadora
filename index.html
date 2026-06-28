@@ -27,7 +27,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
 }
 .calc-top-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding:0 4px; }
 .calc-top-bar h1 { font-size:16px; font-weight:800; color:#573722; text-transform:uppercase; letter-spacing:1px; }
-.calc-close-btn { width:32px; height:32px; background:transparent; border:none; font-size:24px; color:#573722; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+.calc-close-btn{padding:6px 14px;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));border:1px solid rgba(255,255,255,.5);border-radius:16px;font-size:13px;font-weight:900;color:#151515;box-shadow:0 4px 0 var(--calc-op-shadow),0 6px 10px rgba(0,0,0,.15);cursor:pointer;transition:all .1s}
+.calc-close-btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--calc-op-shadow),inset 0 2px 4px rgba(0,0,0,.1)}
 
 .calculator-display{min-height:108px;padding:14px 16px;border-radius:14px;background:var(--calc-display);border:2px solid rgba(52,35,28,.35);box-shadow:inset 0 2px 5px rgba(0,0,0,.18);text-align:right;color:var(--calc-display-text);cursor:pointer;position:relative;z-index:10;}
 .calculator-expression{min-height:24px;font-family:ui-rounded, 'SF Pro Rounded', 'Helvetica Rounded', Arial, sans-serif;font-size:20px;font-weight:600;letter-spacing:1px;color:color-mix(in srgb,var(--calc-display-text) 55%,transparent);overflow-wrap:anywhere}
@@ -111,7 +112,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
 <body ontouchstart="">
 <div class="calculator-shell" id="calculator-shell">
   <div class="calc-top-bar">
-    <button class="calc-close-btn" onclick="window.location.href='../index.html'">≡</button>
+    <button class="calc-close-btn" onclick="window.location.href='../index.html'">Salir</button>
   </div>
 
   <div class="calculator-display" onclick="handleDisplayClick()">
@@ -204,7 +205,9 @@ const CALCULATOR_THEMES=[
   {name:'Lima',accent:'#B4D330',dark:'#94AE25',shellTop:'#FAFDED',shellBottom:'#E3ECBE',display:'#FAFDED',displayText:'#2E3807',numTop:'#FFFFFF',numBottom:'#D1DBAC',numShadow:'#8E996B',opTop:'#F0F6D5',opBottom:'#C9D3A0',opShadow:'#848F5D',clearTop:'#FEEAE5',clearBottom:'#F2BBAE',clearShadow:'#C1887B'},
   {name:'Cielo Nocturno',accent:'#2980B9',dark:'#2471A3',shellTop:'#EAF2F8',shellBottom:'#B3D0E5',display:'#EAF2F8',displayText:'#0B2135',numTop:'#F8FAFC',numBottom:'#A1B8CA',numShadow:'#60778C',opTop:'#D9E6F0',opBottom:'#9CAEC0',opShadow:'#5B6F82',clearTop:'#FEEAE5',clearBottom:'#F2BBAE',clearShadow:'#C1887B'},
   {name:'Frambuesa',accent:'#C71585',dark:'#9E106A',shellTop:'#FDF0F7',shellBottom:'#F1C2DF',display:'#FDF0F7',displayText:'#360423',numTop:'#FFFFFF',numBottom:'#DCACC8',numShadow:'#9D738A',opTop:'#F6DFED',opBottom:'#D5AED0',opShadow:'#977793',clearTop:'#FEEAE5',clearBottom:'#F2BBAE',clearShadow:'#C1887B'},
-  {name:'Gris',accent:'#7F8C8D',dark:'#707B7C',shellTop:'#F2F4F4',shellBottom:'#D4D7D7',display:'#F2F4F4',displayText:'#1F2424',numTop:'#FFFFFF',numBottom:'#C2C7C7',numShadow:'#868E8E',opTop:'#E7EAEB',opBottom:'#B7BCBC',opShadow:'#7A8181',clearTop:'#FEEAE5',clearBottom:'#F2BBAE',clearShadow:'#C1887B'}
+  {name:'Gris',accent:'#7F8C8D',dark:'#707B7C',shellTop:'#F2F4F4',shellBottom:'#D4D7D7',display:'#F2F4F4',displayText:'#1F2424',numTop:'#FFFFFF',numBottom:'#C2C7C7',numShadow:'#868E8E',opTop:'#E7EAEB',opBottom:'#B7BCBC',opShadow:'#7A8181',clearTop:'#FEEAE5',clearBottom:'#F2BBAE',clearShadow:'#C1887B'},
+  {name:'Mandarina',accent:'#E67E22',dark:'#D35400',shellTop:'#FDEBD0',shellBottom:'#F5CBA7',display:'#FAE5D3',displayText:'#6E2C00',numTop:'#FEF9E7',numBottom:'#FAD7A1',numShadow:'#D68910',opTop:'#FADBD8',opBottom:'#E6B0AA',opShadow:'#A93226',clearTop:'#FDF2E9',clearBottom:'#EDBB99',clearShadow:'#BA4A00'},
+  {name:'Otoño',accent:'#D35400',dark:'#A04000',shellTop:'#FCF3CF',shellBottom:'#F5B041',display:'#F9E79F',displayText:'#784212',numTop:'#FEF9E7',numBottom:'#F8C471',numShadow:'#B9770E',opTop:'#FDEBD0',opBottom:'#F5CBA7',opShadow:'#BA4A00',clearTop:'#FADBD8',clearBottom:'#E6B0AA',clearShadow:'#922B21'}
 ];
 
 let CALC_CURRENT='0', CALC_PREVIOUS=null, CALC_OPERATOR='', CALC_JUST_EVALUATED=false;
