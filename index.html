@@ -57,6 +57,8 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calc-mini-key:active::af
 }
 .calc-color { width:44px; height:44px; border-radius:12px; border:2px solid rgba(255,255,255,.5); box-shadow:0 3px 6px rgba(0,0,0,.2); cursor:pointer; }
 .calc-color:active { transform:translateY(2px); }
+.calc-color-tooltip { position:absolute; bottom:115%; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.7); color:#fff; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:600; white-space:nowrap; pointer-events:none; opacity:0; transition:opacity 0.2s; z-index:100; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
+.calc-color-custom:hover .calc-color-tooltip, .calc-color-custom:active .calc-color-tooltip { opacity:1; }
 .calc-colors-actions { padding:12px; background:rgba(0,0,0,.05); border-top:1px solid rgba(0,0,0,.1); display:flex; justify-content:center; gap: 10px; }
 .calc-colors-actions button { padding:10px 20px; border-radius:10px; border:none; background:#7A736B; color:#FFF; font-weight:bold; cursor:pointer; }
 .calc-colors-actions button:active { opacity: 0.8; }
@@ -126,7 +128,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calc-mini-key:active::af
       <div style="font-size:12px; font-weight:800; text-transform:uppercase; opacity:0.9;">🎨 Editando:</div>
       <div id="edit-mode-target" style="font-size:16px; font-weight:900;">Fondo</div>
     </div>
-    <div style="display:flex; align-items:center; gap:12px;"><button onclick="deleteCurrentCustomTheme()" style="background:#ff4d4d; color:white; border:none; padding:8px 12px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">🗑️ Borrar</button><button onclick="saveCustomTheme()" style="background:#fff; color:#4A90E2; border:none; padding:8px 12px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">💾 Guardar</button><input type="color" id="edit-color-picker" oninput="if(isEditMode) applyCustomColor(currentEditType, this.value)" style="width:48px; height:48px; border:3px solid white; border-radius:10px; background:white; cursor:pointer; padding:0;"></div>
+    <div style="display:flex; align-items:center; gap:6px;"><button onclick="deleteCurrentCustomTheme()" title="Borrar diseño" style="background:#ff4d4d; color:white; border:none; padding:8px 10px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">🗑️</button><button onclick="renameCurrentCustomTheme()" title="Renombrar diseño" style="background:#fff; color:#4A90E2; border:none; padding:8px 10px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">✏️</button><button onclick="saveAsNewTheme()" style="background:#fff; color:#4A90E2; border:none; padding:8px 8px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">➕ Nuevo</button><button onclick="saveCustomTheme()" style="background:#fff; color:#4A90E2; border:none; padding:8px 8px; border-radius:10px; font-weight:bold; cursor:pointer; font-size:14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">💾 Guardar</button><input type="color" id="edit-color-picker" oninput="if(isEditMode) applyCustomColor(currentEditType, this.value)" style="width:48px; height:48px; border:3px solid white; border-radius:10px; background:white; cursor:pointer; padding:0;"></div>
   </div>
 
   <div class="calculator-display" onclick="handleDisplayClick()">
@@ -148,7 +150,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calc-mini-key:active::af
     <button class="calc-mini-key calculator-signature-btn" data-calc="elibi"><img class="calculator-signature" src="logo_elibi.jpg" alt="EliBi"></button>
     <button class="calc-mini-key" data-calc="colors" title="Colores">🎨</button>
     <button class="calc-mini-key sound" data-calc="sound" id="calc-sound" title="Activar sonido">🔇</button>
-    <button class="calc-mini-key" data-calc="back" title="Borrar último número">⌫</button>
+    <button class="calc-mini-key" data-calc="back_top" title="Borrar último número">⌫</button>
     <button class="calc-mini-key copy" data-calc="copy" title="Copiar número">Copiar</button>
   </div>
   
@@ -196,7 +198,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calc-mini-key:active::af
     <button class="calc-key" data-calc="1">1</button><button class="calc-key" data-calc="2">2</button><button class="calc-key" data-calc="3">3</button><button class="calc-key op" data-calc="+">＋</button>
     <button class="calc-key" data-calc="0">0</button><button class="calc-key" data-calc=".">,</button><button class="calc-key" data-calc="back">⌫</button><button class="calc-key equals" data-calc="=">=</button>
   </div>
-  <div class="app-version" style="position:absolute; bottom:16px; right:16px; font-size:14px; font-weight:900; color:var(--calc-display-text); opacity:0.35; pointer-events:none;">v43</div>
+  <div class="app-version" style="position:absolute; bottom:16px; right:16px; font-size:14px; font-weight:900; color:var(--calc-display-text); opacity:0.35; pointer-events:none;">v47</div>
 </div>
 
 <script>
@@ -360,6 +362,14 @@ function calcBeep(){
 function toggleCalculatorSound(){CALC_SOUND=!CALC_SOUND;lsSet('hogar_calc_sound',CALC_SOUND?'1':'0');updateCalc();calcBeep();}
 
 function handleCalcKey(v){
+  if (v === 'colors' && typeof isEditMode !== 'undefined' && isEditMode) {
+     if(confirm('¿Quieres CAMBIAR EL COLOR de este botón? (Pulsa Aceptar para darle color, o Cancelar para ABRIR LA PALETA DE TEMAS)')) {
+       handleEditModeSelect('key', v);
+     } else {
+       toggleCalculatorPalette();
+     }
+     return;
+  }
   if (typeof isEditMode!=='undefined' && isEditMode) { handleEditModeSelect('key', v); return; }
   if(v==='colors'){toggleCalculatorPalette();return;}
   if(v==='sound'){toggleCalculatorSound();return;}
@@ -371,7 +381,7 @@ function handleCalcKey(v){
     if(el) {
       let val = el.value || '';
       if(v==='C') val = '';
-      else if(v==='back') val = val.length > 1 ? val.slice(0,-1) : '';
+      else if(v==='back' || v==='back_top') val = val.length > 1 ? val.slice(0,-1) : '';
       else if(/^\d$/.test(v)) val += v;
       else if(v==='.' || v===',') { if(!val.includes(',') && !val.includes('.')) val += ','; }
       el.value = val;
@@ -382,7 +392,7 @@ function handleCalcKey(v){
   if(/^\d$/.test(v)){CALC_CURRENT=CALC_CURRENT==='0'||CALC_JUST_EVALUATED?v:CALC_CURRENT+v;CALC_JUST_EVALUATED=false;}
   else if(v==='.' || v===','){if(CALC_JUST_EVALUATED)CALC_CURRENT='0';if(!CALC_CURRENT.includes('.'))CALC_CURRENT+='.';CALC_JUST_EVALUATED=false;}
   else if(v==='C'){CALC_CURRENT='0';CALC_PREVIOUS=null;CALC_OPERATOR='';CALC_JUST_EVALUATED=false;}
-  else if(v==='back')CALC_CURRENT=CALC_CURRENT.length>1?CALC_CURRENT.slice(0,-1):'0';
+  else if(v==='back' || v==='back_top')CALC_CURRENT=CALC_CURRENT.length>1?CALC_CURRENT.slice(0,-1):'0';
   else if(v==='+/-')CALC_CURRENT=String((Number(CALC_CURRENT)||0)*-1);
   else if(v==='%'){const p=(Number(CALC_CURRENT)||0)/100;CALC_CURRENT=String(CALC_PREVIOUS!==null&&['+','-'].includes(CALC_OPERATOR)?Number(CALC_PREVIOUS)*p:p);}
   else if(['+','-','*','/'].includes(v)){if(CALC_PREVIOUS!==null&&CALC_OPERATOR&&!CALC_JUST_EVALUATED)calculateCalcValues();CALC_PREVIOUS=Number(CALC_CURRENT);CALC_OPERATOR=v;CALC_JUST_EVALUATED=true;}
@@ -535,8 +545,9 @@ function setCustomThemes(themes) { localStorage.setItem('hogar_calc_custom_theme
 function saveCustomTheme() {
   if (!currentCustomTheme) return;
   const themes = getCustomThemes();
+  
   if (currentCustomTheme.id) {
-    if (confirm('¿Deseas ACTUALIZAR el diseño existente? (Pulsa Cancelar para guardarlo como una copia nueva)')) {
+    if (confirm('¿Estás seguro de que quieres SOBREESCRIBIR el diseño "' + currentCustomTheme.name + '"?')) {
       const idx = themes.findIndex(t => t.id === currentCustomTheme.id);
       if (idx !== -1) {
         themes[idx] = JSON.parse(JSON.stringify(currentCustomTheme));
@@ -545,12 +556,34 @@ function saveCustomTheme() {
         alert('Diseño actualizado correctamente.');
         return;
       }
+    }
+  } else {
+    saveAsNewTheme();
+  }
+}
+
+function saveAsNewTheme() {
+  if (!currentCustomTheme) return;
+  const themes = getCustomThemes();
+  
+  const name = prompt('Nombre para tu NUEVO diseño:', currentCustomTheme.name ? currentCustomTheme.name + ' (Copia)' : 'Mi Diseño');
+  if (!name) return;
+  
+  const existingIdx = themes.findIndex(t => t.name === name);
+  if (existingIdx !== -1) {
+    if (confirm(`Ya existe un diseño con el nombre "${name}". ¿Quieres SOBREESCRIBIRLO?`)) {
+      currentCustomTheme.id = themes[existingIdx].id;
+      currentCustomTheme.name = name;
+      themes[existingIdx] = JSON.parse(JSON.stringify(currentCustomTheme));
+      setCustomThemes(themes);
+      renderThemes();
+      alert('Diseño actualizado correctamente.');
+      return;
     } else {
-      delete currentCustomTheme.id;
+      return;
     }
   }
-  const name = prompt('Nombre para tu diseño:');
-  if (!name) return;
+  
   currentCustomTheme.name = name;
   currentCustomTheme.id = Date.now().toString();
   themes.push(JSON.parse(JSON.stringify(currentCustomTheme)));
@@ -558,6 +591,31 @@ function saveCustomTheme() {
   renderThemes();
   alert('Diseño "' + name + '" guardado correctamente.');
 }
+
+function renameCurrentCustomTheme() {
+  if (!currentCustomTheme || !currentCustomTheme.id) {
+    alert('Guarda este diseño primero antes de poder renombrarlo.');
+    return;
+  }
+  const themes = getCustomThemes();
+  const idx = themes.findIndex(t => t.id === currentCustomTheme.id);
+  if (idx === -1) return;
+  const newName = prompt('Nuevo nombre para tu diseño:', currentCustomTheme.name);
+  if (!newName || newName === currentCustomTheme.name) return;
+  
+  if (themes.some(t => t.name === newName)) {
+     alert('Ya existe un diseño con ese nombre.');
+     return;
+  }
+  
+  currentCustomTheme.name = newName;
+  themes[idx].name = newName;
+  setCustomThemes(themes);
+  renderThemes();
+  document.getElementById('edit-mode-target').innerText = 'Fondo';
+  alert('Diseño renombrado a: ' + newName);
+}
+
 function deleteCurrentCustomTheme() {
   if (!currentCustomTheme || !currentCustomTheme.id) {
     alert('Este diseño aún no está guardado, no se puede borrar.');
@@ -589,7 +647,7 @@ function renderThemes() {
   const custom = getCustomThemes();
   if (custom.length > 0) {
     html += '<div style="width:100%; height:1px; background:rgba(0,0,0,0.1); margin:4px 0;"></div>';
-    html += custom.map((theme,index)=>`<div style="position:relative; display:inline-block;"><button class="calc-color" title="${theme.name}" style="background:linear-gradient(135deg,${theme.accent||'#ccc'},${theme.display||'#eee'},${theme.opBottom||'#ddd'})" onclick="setCalculatorTheme(getCustomThemes()[${index}]); toggleCalculatorPalette()"></button><button onclick="deleteCustomTheme(${index}); if(typeof event!=='undefined')event.stopPropagation();" style="position:absolute; top:-6px; right:-6px; background:white; border:1px solid #ccc; border-radius:50%; width:20px; height:20px; font-size:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:red; box-shadow:0 2px 4px rgba(0,0,0,0.2); z-index:10;">✕</button></div>`).join('');
+    html += custom.map((theme,index)=>`<div class="calc-color-custom" style="position:relative; display:inline-block;"><button class="calc-color" style="background:linear-gradient(135deg,${theme.accent||'#ccc'},${theme.display||'#eee'},${theme.opBottom||'#ddd'})" onclick="setCalculatorTheme(getCustomThemes()[${index}]); toggleCalculatorPalette()"></button><span class="calc-color-tooltip">${theme.name}</span></div>`).join('');
   }
   palette.innerHTML = html;
 }
