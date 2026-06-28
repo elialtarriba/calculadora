@@ -205,7 +205,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calc-mini-key:active::af
     <button class="calc-key" data-calc="1">1</button><button class="calc-key" data-calc="2">2</button><button class="calc-key" data-calc="3">3</button><button class="calc-key op" data-calc="+">＋</button>
     <button class="calc-key" data-calc="0">0</button><button class="calc-key" data-calc=".">,</button><button class="calc-key" data-calc="back">⌫</button><button class="calc-key equals" data-calc="=">=</button>
   </div>
-  <div class="app-version" style="position:absolute; bottom:16px; right:16px; font-size:14px; font-weight:900; color:var(--calc-display-text); opacity:0.35; pointer-events:none;">v55</div>
+  <div class="app-version" style="position:absolute; bottom:16px; right:16px; font-size:14px; font-weight:900; color:var(--calc-display-text); opacity:0.35; pointer-events:none;">v61</div>
 </div>
 
 <script>
@@ -238,6 +238,13 @@ const CALCULATOR_THEMES=[
   {name:'Melocotón',accent:'#F5B041',dark:'#E67E22',shellTop:'#FDF2E9',shellBottom:'#FAE5D3',display:'#FDF2E9',displayText:'#512E05',numTop:'#FFFFFF',numBottom:'#F5D9C4',numShadow:'#CD9D7F',opTop:'#FADBD8',opBottom:'#E8AFA7',opShadow:'#B26458',clearTop:'#FCF3CF',clearBottom:'#F4D03F',clearShadow:'#C39F24',topOpTop:'#FADBD8',topOpBottom:'#E8AFA7',topOpShadow:'#B26458'},
   {name:'Pastel Sorpresa',accent:'#FFB347',dark:'#E69622',shellTop:'#F4F5F7',shellBottom:'#E0E4E8',display:'#FFF1E0',displayText:'#362C22',numTop:'#FFFFE0',numBottom:'#F8EEB2',numShadow:'#C9C289',opTop:'#EBECEF',opBottom:'#C9CED6',opShadow:'#919AA6',clearTop:'#DEDFE3',clearBottom:'#B0B6C2',clearShadow:'#7A8291',topOpTop:'#EBECEF',topOpBottom:'#C9CED6',topOpShadow:'#919AA6'}
 ];
+
+try {
+  const modDefs = JSON.parse(localStorage.getItem('hogar_calc_modified_defaults') || '{}');
+  Object.keys(modDefs).forEach(k => {
+    if (CALCULATOR_THEMES[k]) Object.assign(CALCULATOR_THEMES[k], modDefs[k]);
+  });
+} catch(e) {}
 
 let CALC_CURRENT='0', CALC_PREVIOUS=null, CALC_OPERATOR='', CALC_JUST_EVALUATED=false;
 let CALC_SOUND=true, CALC_AUDIO=null;
@@ -391,7 +398,17 @@ function handleCalcKey(v){
     const el = document.getElementById(`calc-tool-${ACTIVE_TOOL_INPUT}`);
     if(el) {
       let val = el.value || '';
-      if(v==='C') val = '';
+      if(v==='C') { 
+        val = '';
+        CALC_CURRENT='0'; CALC_PREVIOUS=null; CALC_OPERATOR=''; CALC_JUST_EVALUATED=false;
+        const resEl = document.getElementById('calc-tool-result');
+        if(resEl) {
+          if(CALC_PERCENT_TOOL==='vat') resEl.textContent='Escribe el precio con IVA y el porcentaje de IVA.';
+          else if(CALC_PERCENT_TOOL==='increase') resEl.textContent='Escribe el importe y el porcentaje que quieres sumar.';
+          else resEl.textContent='Escribe el importe y el porcentaje que quieres quitar.';
+        }
+        updateCalc();
+      }
       else if(v==='back' || v==='back_top') val = val.length > 1 ? val.slice(0,-1) : '';
       else if(/^\d$/.test(v)) val += v;
       else if(v==='.' || v===',') { if(!val.includes(',') && !val.includes('.')) val += ','; }
@@ -554,6 +571,21 @@ function getCustomThemes() { try { return JSON.parse(localStorage.getItem('hogar
 function setCustomThemes(themes) { localStorage.setItem('hogar_calc_custom_themes', JSON.stringify(themes)); }
 function saveCustomTheme() {
   if (!currentCustomTheme) return;
+  
+  if (typeof currentCustomTheme.defaultIndex === 'number') {
+    if (confirm('¿Quieres SOBREESCRIBIR el tema de fábrica "' + currentCustomTheme.name + '" con tus cambios?')) {
+       let modified = {};
+       try { modified = JSON.parse(localStorage.getItem('hogar_calc_modified_defaults') || '{}'); } catch(e){}
+       modified[currentCustomTheme.defaultIndex] = JSON.parse(JSON.stringify(currentCustomTheme));
+       localStorage.setItem('hogar_calc_modified_defaults', JSON.stringify(modified));
+       Object.assign(CALCULATOR_THEMES[currentCustomTheme.defaultIndex], currentCustomTheme);
+       renderThemes();
+       setCalculatorTheme(currentCustomTheme);
+       alert('Tema de fábrica actualizado correctamente.');
+    }
+    return;
+  }
+  
   const themes = getCustomThemes();
   
   if (currentCustomTheme.id) {
@@ -563,6 +595,7 @@ function saveCustomTheme() {
         themes[idx] = JSON.parse(JSON.stringify(currentCustomTheme));
         setCustomThemes(themes);
         renderThemes();
+        setCalculatorTheme(currentCustomTheme);
         alert('Diseño actualizado correctamente.');
         return;
       }
@@ -576,7 +609,7 @@ function saveAsNewTheme() {
   if (!currentCustomTheme) return;
   const themes = getCustomThemes();
   
-  const name = prompt('Nombre para tu NUEVO diseño:', currentCustomTheme.name ? currentCustomTheme.name + ' (Copia)' : 'Mi Diseño');
+  const name = prompt('Nombre para tu NUEVO diseño:', currentCustomTheme.name ? currentCustomTheme.name : 'Mi Diseño');
   if (!name) return;
   
   const existingIdx = themes.findIndex(t => t.name === name);
@@ -587,6 +620,7 @@ function saveAsNewTheme() {
       themes[existingIdx] = JSON.parse(JSON.stringify(currentCustomTheme));
       setCustomThemes(themes);
       renderThemes();
+      setCalculatorTheme(currentCustomTheme);
       alert('Diseño actualizado correctamente.');
       return;
     } else {
@@ -599,6 +633,7 @@ function saveAsNewTheme() {
   themes.push(JSON.parse(JSON.stringify(currentCustomTheme)));
   setCustomThemes(themes);
   renderThemes();
+  setCalculatorTheme(currentCustomTheme);
   alert('Diseño "' + name + '" guardado correctamente.');
 }
 
@@ -660,7 +695,7 @@ function deleteCustomTheme(index) {
 function renderThemes() {
   const palette=document.getElementById('calculator-palette');
   if(!palette) return;
-  let html = CALCULATOR_THEMES.map((theme,index)=>`<button class="calc-color" title="${theme.name}" style="background:linear-gradient(135deg,${theme.accent},${theme.display},${theme.opBottom})" onclick="setCalculatorTheme(CALCULATOR_THEMES[${index}]); toggleCalculatorPalette()"></button>`).join('');
+  let html = CALCULATOR_THEMES.map((theme,index)=>`<div class="calc-color-custom" style="position:relative; display:inline-block;"><button class="calc-color" title="${theme.name}" style="background:linear-gradient(135deg,${theme.accent},${theme.display},${theme.opBottom})" onclick="setCalculatorTheme(CALCULATOR_THEMES[${index}]); toggleCalculatorPalette()"></button><span class="calc-color-tooltip">${theme.name}</span></div>`).join('');
   const custom = getCustomThemes();
   if (custom.length > 0) {
     html += '<div style="width:100%; height:1px; background:rgba(0,0,0,0.1); margin:4px 0;"></div>';
@@ -704,11 +739,15 @@ function toggleEditMode() {
     if (!currentCustomTheme) {
       let active = JSON.parse(localStorage.getItem('hogar_calc_theme'));
       currentCustomTheme = { name: 'Mi Diseño' };
-      if (active) Object.assign(currentCustomTheme, active);
-      currentCustomTheme.name = 'Mi Diseño';
+      if (typeof active === 'object' && active !== null) {
+         Object.assign(currentCustomTheme, active);
+      } else if (typeof active === 'number' && CALCULATOR_THEMES[active]) {
+         Object.assign(currentCustomTheme, CALCULATOR_THEMES[active]);
+         currentCustomTheme.defaultIndex = active;
+      }
     }
     setTimeout(() => {
-      alert('🎨 MODO DISEÑO INICIADO\n\n1. Toca cualquier botón o parte de la calculadora para seleccionarlo.\n2. Arriba verás lo que has seleccionado (ej. "Números").\n3. Toca el cuadradito blanco de arriba para elegir el color.');
+      alert('🎨 MODO DISEÑO INICIADO\n\n1. Toca cualquier botón o parte de la calculadora para seleccionarlo.\n2. Arriba verás lo que has seleccionado debajo de EDITANDO:\n3. Toca el cuadradito de color de arriba para elegir el color.');
     }, 150);
   } else {
     document.body.classList.remove('edit-mode');
