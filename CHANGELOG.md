@@ -8,6 +8,7 @@ Este archivo mantiene un registro de todas las modificaciones y tareas pendiente
 
 ## Cambios Realizados
 
+- **(2026-06-28) Rediseño de Interfaz:** Se eliminó el encabezado "Calculadora Pro" y se redujo el margen inferior del teclado para evitar cortes en la pantalla. Se incorporó correctamente el logo `EliBi`. El botón de "Colores" se rediseñó con estilo 3D y se reubicó en la misma fila del logo. La paleta de colores ahora se despliega en un pop-up superpuesto en lugar de empujar el contenido.
 - **(2026-06-28) Soporte Offline (PWA):** Se añadió `manifest.json` y `sw.js` (Service Worker) para que la Calculadora pueda instalarse en la pantalla de inicio del iPhone y usarse sin conexión a internet. Se configuró para usar el logo `icono.png`.
 - **(2026-06-28) Creación de App Independiente:** Se extrajo el código de la calculadora (HTML, CSS y JS) desde el proyecto original hacia su propio entorno.
 - **(2026-06-28) Pantalla Completa:** Ajuste en el CSS para que la calculadora ocupe de manera óptima el 100vw y 100vh de la pantalla de un iPhone.

@@ -37,14 +37,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
 .calc-mini-key{min-height:42px;min-width:72px;padding:0 16px;border:none;border-radius:12px;font-size:20px;font-weight:900;color:#151515;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 4px 0 var(--calc-op-shadow),0 6px 10px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.9);cursor:pointer}
 .calc-mini-key.copy{font-size:13px}.calc-mini-key.sound{min-width:48px;padding:0 12px;font-size:19px}.calc-mini-key:active{transform:translateY(5px);box-shadow:0 0 0 var(--calc-op-shadow),inset 0 3px 5px rgba(0,0,0,.2)}
 
-.calc-colors-button{margin-top:12px;padding:8px 14px;border:1px solid rgba(80,40,10,.18);border-radius:10px;background:#fffaf4;color:#573722;font-size:12px;font-weight:900;cursor:pointer; align-self:flex-start;}
-.calculator-palette{display:none;gap:8px;flex-wrap:wrap;margin:12px 0 2px}.calculator-palette.open{display:flex}.calc-color{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 0 rgba(0,0,0,.16);cursor:pointer}
-
+.calc-colors-overlay {
+  position:absolute; top:calc(env(safe-area-inset-top, 20px) + 160px); left:16px; right:16px; bottom:env(safe-area-inset-bottom, 20px);
+  background:var(--calc-display);
+  border:1px solid rgba(52,35,28,.35); border-radius:14px;
+  display:none; flex-direction:column; z-index:9;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+  overflow:hidden;
+}
+.calc-colors-overlay.open { display:flex; }
+.calc-colors-container {
+  flex:1; padding:20px; display:flex; flex-wrap:wrap; gap:12px; align-content:flex-start; justify-content:center;
+}
+.calc-color{width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 0 rgba(0,0,0,.16);cursor:pointer}
+.calc-colors-actions {
+  display:grid; grid-template-columns:1fr; gap:1px; background:rgba(52,35,28,.3);
+}
+.calc-colors-actions button {
+  background:#6b645b; color:white; border:none; padding:16px; font-size:15px; font-weight:800; cursor:pointer;
+}
+.calc-colors-actions button:active { background:#555049; }
 .calculator-percent-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
 .calc-tool-button{min-height:44px;border:1px solid rgba(255,255,255,.72);border-radius:12px;color:#151515;font-size:13px;font-weight:900;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 4px 0 var(--calc-op-shadow),0 6px 9px rgba(0,0,0,.16);cursor:pointer}.calc-tool-button:active,.calc-tool-button.active{transform:translateY(4px);box-shadow:inset 0 2px 4px rgba(0,0,0,.18)}
 .calc-tool-panel{display:none;margin-top:10px;padding:12px;border:1px solid rgba(52,35,28,.18);border-radius:12px;background:rgba(255,255,255,.42)}.calc-tool-panel.open{display:block}.calc-tool-fields{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:9px}.calc-tool-field label{display:block;margin-bottom:4px;color:var(--calc-display-text);font-size:11px;font-weight:800}.calc-tool-field input{width:100%;min-height:42px;padding:8px 10px;border:1.5px solid rgba(52,35,28,.28);border-radius:9px;background:rgba(255,255,255,.82);color:#151515;font-size:18px;text-align:right}.calc-tool-calculate{width:100%;min-height:42px;margin-top:9px;border:1px solid rgba(255,255,255,.7);border-radius:10px;color:#151515;font-weight:900;background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 4px 0 var(--calc-accent-dark),0 6px 8px rgba(0,0,0,.16);cursor:pointer}.calc-tool-result{min-height:42px;margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--calc-display);color:var(--calc-display-text);font-size:13px;line-height:1.45}
 
-.calculator-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:auto; padding-top: 14px;}
+.calculator-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px; padding-top: 10px;}
 .calc-key{min-height:clamp(58px, 15vh, 80px);border:1px solid rgba(255,255,255,.72);border-radius:10px;font-size:30px;font-weight:400;color:#151515;background:linear-gradient(180deg,var(--calc-num-top),var(--calc-num-bottom));box-shadow:0 8px 0 var(--calc-num-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95);cursor:pointer}.calc-key:active{transform:translateY(8px);box-shadow:0 0 0 var(--calc-num-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.op{background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 5px 0 var(--calc-op-shadow),0 7px 10px rgba(0,0,0,.18)}.calc-key.clear{background:linear-gradient(180deg,var(--calc-clear-top),var(--calc-clear-bottom));box-shadow:0 5px 0 var(--calc-clear-shadow),0 7px 10px rgba(0,0,0,.18)}.calc-key.equals{background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 5px 0 var(--calc-accent-dark),0 7px 10px rgba(0,0,0,.2)}
 
 /* History Overlay Styles */
@@ -88,7 +105,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
 <div class="calculator-shell" id="calculator-shell">
   <div class="calc-top-bar">
     <button class="calc-close-btn" onclick="window.location.href='../index.html'">≡</button>
-    <h1>Calculadora Pro</h1>
   </div>
 
   <div class="calculator-display" onclick="toggleHistory()">
@@ -107,14 +123,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
   </div>
 
   <div class="calculator-display-actions">
-    <img class="calculator-signature" src="../logo_elibi.jpg" alt="EliBi">
+    <img class="calculator-signature" src="logo_elibi.jpg" alt="EliBi">
+    <button class="calc-mini-key" onclick="toggleCalculatorPalette()">🎨 Colores</button>
     <button class="calc-mini-key sound" data-calc="sound" id="calc-sound" title="Activar sonido">🔇</button>
     <button class="calc-mini-key" data-calc="back" title="Borrar último número">⌫</button>
     <button class="calc-mini-key copy" data-calc="copy" title="Copiar número">Copiar</button>
   </div>
   
-  <button class="calc-colors-button" onclick="toggleCalculatorPalette()">🎨 Colores</button>
-  <div class="calculator-palette" id="calculator-palette"></div>
+  <div class="calc-colors-overlay" id="calc-colors-overlay">
+    <div class="calc-colors-container" id="calculator-palette">
+      <!-- Colors injected here -->
+    </div>
+    <div class="calc-colors-actions">
+      <button onclick="toggleCalculatorPalette()">Cerrar</button>
+    </div>
+  </div>
   
   <div class="calculator-percent-tools">
     <button class="calc-tool-button" id="calc-discount-button" onclick="toggleCalcPercentTool('discount')">− % Descuento</button>
@@ -259,8 +282,10 @@ function handleCalcKey(v){
   updateCalc();
 }
 
-function toggleCalculatorPalette(){document.getElementById('calculator-palette')?.classList.toggle('open');}
-function setCalculatorTheme(theme){
+function toggleCalculatorPalette(){
+  const p=document.getElementById('calc-colors-overlay');
+  if(p){p.classList.toggle('open');}
+}function setCalculatorTheme(theme){
   const shell=document.getElementById('calculator-shell');if(!shell||!theme)return;
   [['accent','--calc-accent'],['dark','--calc-accent-dark'],['shellTop','--calc-shell-top'],['shellBottom','--calc-shell-bottom'],['display','--calc-display'],['displayText','--calc-display-text'],['numTop','--calc-num-top'],['numBottom','--calc-num-bottom'],['numShadow','--calc-num-shadow'],['opTop','--calc-op-top'],['opBottom','--calc-op-bottom'],['opShadow','--calc-op-shadow'],['clearTop','--calc-clear-top'],['clearBottom','--calc-clear-bottom'],['clearShadow','--calc-clear-shadow']].forEach(([key,prop])=>shell.style.setProperty(prop,theme[key]));
   lsSet('hogar_calc_theme',JSON.stringify(theme));
