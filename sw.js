@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calc-offline-v3';
+const CACHE_NAME = 'calc-offline-v10';
 const ASSETS = [
   './',
   './index.html',
