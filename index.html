@@ -21,6 +21,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
   --calc-display:#B8DDE6;--calc-display-text:#10222B;--calc-num-top:#F2F1EC;--calc-num-bottom:#C9C9BD;
   --calc-num-shadow:#7E8177;--calc-op-top:#EFF4FA;--calc-op-bottom:#CAD2DD;--calc-op-shadow:#8490A0;
   --calc-clear-top:#FFD8D5;--calc-clear-bottom:#F2A6A0;--calc-clear-shadow:#D3665E;
+  width:100vw; height:100vh; padding:env(safe-area-inset-top, 40px) 32px env(safe-area-inset-bottom, 40px) 32px;
+  display:flex; flex-direction:column; position:relative;
   background:linear-gradient(180deg,var(--calc-shell-top),var(--calc-shell-bottom));}body.edit-mode .calculator-shell { box-shadow: inset 0 0 0 4px #4A90E2; }
 body.edit-mode .calc-key::after, body.edit-mode .calculator-display::after, body.edit-mode .calc-tool-panel::after, body.edit-mode .calc-tool-button::after, body.edit-mode #easter-egg-text::after {
   content:''; position:absolute; inset:0; border:3px solid #4A90E2; border-radius:inherit; opacity:0; pointer-events:none; z-index:99; transition:opacity .1s;
@@ -495,7 +497,6 @@ function toggleEditMode() {
     btn.style.background = '#4A90E2';
     topBar.style.display = 'none';
     editBar.style.display = 'flex';
-    toggleCalculatorPalette();
     
     currentEditType = 'shell';
     document.getElementById('edit-mode-target').innerText = 'Fondo';
@@ -587,6 +588,7 @@ function applyCustomColor(type, baseHex) {
   }
   
   setCalculatorTheme(currentCustomTheme);
+  lsSet('hogar_calc_theme', JSON.stringify(currentCustomTheme));
 }
 </script>
 
