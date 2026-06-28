@@ -25,14 +25,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
   width:100vw; height:100vh; padding:env(safe-area-inset-top, 20px) 16px env(safe-area-inset-bottom, 20px);
   display:flex; flex-direction:column; position:relative;
 }
-.calc-top-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding:0 4px; }
+.calc-top-bar { display:flex; align-items:center; justify-content:space-between; margin-top:10px; margin-bottom:12px; padding:0 4px; }
 .calc-top-bar h1 { font-size:16px; font-weight:800; color:#573722; text-transform:uppercase; letter-spacing:1px; }
-.calc-close-btn{padding:6px 14px;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));border:1px solid rgba(255,255,255,.5);border-radius:16px;font-size:13px;font-weight:900;color:#151515;box-shadow:0 4px 0 var(--calc-op-shadow),0 6px 10px rgba(0,0,0,.15);cursor:pointer;transition:all .1s}
-.calc-close-btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--calc-op-shadow),inset 0 2px 4px rgba(0,0,0,.1)}
+.calc-close-btn{display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;min-height:28px;line-height:1;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));border:1px solid rgba(255,255,255,.5);border-radius:14px;font-size:12px;font-weight:800;color:#151515;box-shadow:0 3px 0 var(--calc-op-shadow),0 4px 6px rgba(0,0,0,.15);cursor:pointer;transition:all .1s}
+.calc-close-btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--calc-op-shadow),inset 0 2px 4px rgba(0,0,0,.1)}
 
-.calculator-display{min-height:108px;padding:14px 16px;border-radius:14px;background:var(--calc-display);border:2px solid rgba(52,35,28,.35);box-shadow:inset 0 2px 5px rgba(0,0,0,.18);text-align:right;color:var(--calc-display-text);cursor:pointer;position:relative;z-index:10;}
+.calculator-display{min-height:124px;padding:14px 16px;border-radius:14px;background:var(--calc-display);border:2px solid rgba(52,35,28,.35);box-shadow:inset 0 2px 5px rgba(0,0,0,.18);text-align:right;color:var(--calc-display-text);cursor:pointer;position:relative;z-index:10;}
 .calculator-expression{min-height:24px;font-family:ui-rounded, 'SF Pro Rounded', 'Helvetica Rounded', Arial, sans-serif;font-size:20px;font-weight:600;letter-spacing:1px;color:color-mix(in srgb,var(--calc-display-text) 55%,transparent);overflow-wrap:anywhere}
-.calculator-value{font-family:ui-rounded, 'SF Pro Rounded', 'Helvetica Rounded', Arial, sans-serif;font-size:clamp(48px,12vw,80px);line-height:1.05;font-weight:600;letter-spacing:1.5px;overflow-wrap:anywhere;transform:scaleY(1.35);transform-origin:right bottom}
+.calculator-value{margin-top:15px;font-family:ui-rounded, 'SF Pro Rounded', 'Helvetica Rounded', Arial, sans-serif;font-size:clamp(48px,12vw,80px);line-height:1.05;font-weight:600;letter-spacing:1.5px;overflow-wrap:anywhere;transform:scaleY(1.35);transform-origin:right bottom}
 
 .calculator-display-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:12px 2px 4px}
 .calculator-signature{width:104px;height:46px;margin-right:auto;object-fit:contain;mix-blend-mode:multiply;cursor:pointer;transition:all .15s}
@@ -70,7 +70,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
 .calc-tool-panel{display:none;margin-top:10px;padding:12px;border:1px solid rgba(52,35,28,.18);border-radius:12px;background:rgba(255,255,255,.42)}.calc-tool-panel.open{display:block}.calc-tool-fields{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:9px}.calc-tool-field label{display:block;margin-bottom:4px;color:var(--calc-display-text);font-size:11px;font-weight:600}.calc-tool-field input{width:100%;min-height:42px;padding:8px 10px;border:1.5px solid rgba(52,35,28,.28);border-radius:9px;background:rgba(255,255,255,.82);color:#151515;font-size:18px;text-align:right}.calc-tool-calculate{width:100%;min-height:42px;margin-top:9px;border:1px solid rgba(255,255,255,.7);border-radius:10px;color:#151515;font-weight:600;background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 4px 0 var(--calc-accent-dark),0 6px 8px rgba(0,0,0,.16);cursor:pointer}.calc-tool-result{min-height:42px;margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--calc-display);color:var(--calc-display-text);font-size:13px;line-height:1.45}
 
 .calculator-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px; padding-top: 10px;}
-.calc-key{min-height:clamp(58px, 15vh, 80px);border:1px solid rgba(255,255,255,.72);border-radius:10px;font-size:30px;font-weight:400;color:#151515;background:linear-gradient(180deg,var(--calc-num-top),var(--calc-num-bottom));box-shadow:0 8px 0 var(--calc-num-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95);cursor:pointer}.calc-key:active{transform:translateY(8px);box-shadow:0 0 0 var(--calc-num-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.op{background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 5px 0 var(--calc-op-shadow),0 7px 10px rgba(0,0,0,.18)}.calc-key.clear{background:linear-gradient(180deg,var(--calc-clear-top),var(--calc-clear-bottom));box-shadow:0 5px 0 var(--calc-clear-shadow),0 7px 10px rgba(0,0,0,.18)}.calc-key.equals{background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 5px 0 var(--calc-accent-dark),0 7px 10px rgba(0,0,0,.2)}
+.calc-key{min-height:clamp(58px, 15vh, 80px);border:1px solid rgba(255,255,255,.72);border-radius:10px;font-size:30px;font-weight:400;color:#151515;background:linear-gradient(180deg,var(--calc-num-top),var(--calc-num-bottom));box-shadow:0 8px 0 var(--calc-num-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95);cursor:pointer}.calc-key:active{transform:translateY(8px);box-shadow:0 0 0 var(--calc-num-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.op{background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 5px 0 var(--calc-op-shadow),0 7px 10px rgba(0,0,0,.18)}.calc-key.clear{background:linear-gradient(180deg,var(--calc-clear-top),var(--calc-clear-bottom));box-shadow:0 5px 0 var(--calc-clear-shadow),0 7px 10px rgba(0,0,0,.18)}.calc-key.top-op{background:linear-gradient(180deg,var(--calc-top-op-top, var(--calc-clear-top)),var(--calc-top-op-bottom, var(--calc-clear-bottom)));box-shadow:0 5px 0 var(--calc-top-op-shadow, var(--calc-clear-shadow)),0 7px 10px rgba(0,0,0,.18)}.calc-key.equals{background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 5px 0 var(--calc-accent-dark),0 7px 10px rgba(0,0,0,.2)}
 
 /* History Overlay Styles */
 .calc-history-overlay {
@@ -112,7 +112,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
 <body ontouchstart="">
 <div class="calculator-shell" id="calculator-shell">
   <div class="calc-top-bar">
-    <button class="calc-close-btn" onclick="window.location.href='../index.html'">Salir</button>
+    <button class="calc-close-btn" onclick="alert('Estás usando la calculadora como App.\\n\\nPara salir, desliza la pantalla hacia arriba desde el borde inferior de tu iPhone, o pulsa el botón de inicio.')">Salir</button>
   </div>
 
   <div class="calculator-display" onclick="handleDisplayClick()">
@@ -173,7 +173,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
   </div>
 
   <div class="calculator-grid" id="calculator-grid">
-    <button class="calc-key clear" data-calc="C">C</button><button class="calc-key" data-calc="%">%</button><button class="calc-key" data-calc="+/-">+/−</button><button class="calc-key op" data-calc="/">÷</button>
+    <button class="calc-key clear" data-calc="C">C</button><button class="calc-key top-op" data-calc="%">%</button><button class="calc-key top-op" data-calc="+/-">+/−</button><button class="calc-key op" data-calc="/">÷</button>
     <button class="calc-key" data-calc="7">7</button><button class="calc-key" data-calc="8">8</button><button class="calc-key" data-calc="9">9</button><button class="calc-key op" data-calc="*">×</button>
     <button class="calc-key" data-calc="4">4</button><button class="calc-key" data-calc="5">5</button><button class="calc-key" data-calc="6">6</button><button class="calc-key op" data-calc="-">−</button>
     <button class="calc-key" data-calc="1">1</button><button class="calc-key" data-calc="2">2</button><button class="calc-key" data-calc="3">3</button><button class="calc-key op" data-calc="+">＋</button>
@@ -207,7 +207,9 @@ const CALCULATOR_THEMES=[
   {name:'Frambuesa',accent:'#C71585',dark:'#9E106A',shellTop:'#FDF0F7',shellBottom:'#F1C2DF',display:'#FDF0F7',displayText:'#360423',numTop:'#FFFFFF',numBottom:'#DCACC8',numShadow:'#9D738A',opTop:'#F6DFED',opBottom:'#D5AED0',opShadow:'#977793',clearTop:'#FEEAE5',clearBottom:'#F2BBAE',clearShadow:'#C1887B'},
   {name:'Gris',accent:'#7F8C8D',dark:'#707B7C',shellTop:'#F2F4F4',shellBottom:'#D4D7D7',display:'#F2F4F4',displayText:'#1F2424',numTop:'#FFFFFF',numBottom:'#C2C7C7',numShadow:'#868E8E',opTop:'#E7EAEB',opBottom:'#B7BCBC',opShadow:'#7A8181',clearTop:'#FEEAE5',clearBottom:'#F2BBAE',clearShadow:'#C1887B'},
   {name:'Mandarina',accent:'#E67E22',dark:'#D35400',shellTop:'#FDEBD0',shellBottom:'#F5CBA7',display:'#FAE5D3',displayText:'#6E2C00',numTop:'#FEF9E7',numBottom:'#FAD7A1',numShadow:'#D68910',opTop:'#FADBD8',opBottom:'#E6B0AA',opShadow:'#A93226',clearTop:'#FDF2E9',clearBottom:'#EDBB99',clearShadow:'#BA4A00'},
-  {name:'Otoño',accent:'#D35400',dark:'#A04000',shellTop:'#FCF3CF',shellBottom:'#F5B041',display:'#F9E79F',displayText:'#784212',numTop:'#FEF9E7',numBottom:'#F8C471',numShadow:'#B9770E',opTop:'#FDEBD0',opBottom:'#F5CBA7',opShadow:'#BA4A00',clearTop:'#FADBD8',clearBottom:'#E6B0AA',clearShadow:'#922B21'}
+  {name:'Otoño',accent:'#D35400',dark:'#A04000',shellTop:'#FCF3CF',shellBottom:'#F5B041',display:'#F9E79F',displayText:'#784212',numTop:'#FEF9E7',numBottom:'#F8C471',numShadow:'#B9770E',opTop:'#FDEBD0',opBottom:'#F5CBA7',opShadow:'#BA4A00',clearTop:'#FADBD8',clearBottom:'#E6B0AA',clearShadow:'#922B21'},
+  {name:'Melocotón',accent:'#F5B041',dark:'#E67E22',shellTop:'#FDF2E9',shellBottom:'#FAE5D3',display:'#FDF2E9',displayText:'#512E05',numTop:'#FFFFFF',numBottom:'#F5D9C4',numShadow:'#CD9D7F',opTop:'#FADBD8',opBottom:'#E8AFA7',opShadow:'#B26458',clearTop:'#FCF3CF',clearBottom:'#F4D03F',clearShadow:'#C39F24',topOpTop:'#FADBD8',topOpBottom:'#E8AFA7',topOpShadow:'#B26458'},
+  {name:'Pastel Sorpresa',accent:'#FFB347',dark:'#E69622',shellTop:'#F4F5F7',shellBottom:'#E0E4E8',display:'#FFF1E0',displayText:'#362C22',numTop:'#FFFFE0',numBottom:'#F8EEB2',numShadow:'#C9C289',opTop:'#EBECEF',opBottom:'#C9CED6',opShadow:'#919AA6',clearTop:'#DEDFE3',clearBottom:'#B0B6C2',clearShadow:'#7A8291',topOpTop:'#EBECEF',topOpBottom:'#C9CED6',topOpShadow:'#919AA6'}
 ];
 
 let CALC_CURRENT='0', CALC_PREVIOUS=null, CALC_OPERATOR='', CALC_JUST_EVALUATED=false;
@@ -228,7 +230,17 @@ const easterEggQuotes = [
   "🌟 ¡Nunca dejes de reír! 🌟", "✨ ¡Celebra tus éxitos! ✨", "💫 ¡El éxito te espera! 💫",
   "🌟 ¡Siente tu poder! 🌟", "✨ ¡Eres inspiración! ✨", "💫 ¡Brilla con fuerza! 💫",
   "🌟 ¡Hazlo con pasión! 🌟", "✨ ¡Sigue tu corazón! ✨", "💫 ¡Despierta tu genio! 💫",
-  "🌟 ¡Tu esfuerzo vale oro! 🌟", "✨ ¡Persigue tus metas! ✨", "💫 ¡Crea tu propio destino! 💫"
+  "🌟 ¡Tu esfuerzo vale oro! 🌟", "✨ ¡Persigue tus metas! ✨", "💫 ¡Crea tu propio destino! 💫",
+  "✨ ¡El límite es el cielo! ✨", "🌟 ¡Saca tu mejor versión! 🌟", "💫 ¡Toma las riendas! 💫",
+  "✨ ¡Respira y confía! ✨", "🌟 ¡Hoy es tu momento! 🌟", "💫 ¡Deja huella! 💫",
+  "✨ ¡Avanza sin miedo! ✨", "🌟 ¡Tu luz ilumina! 🌟", "💫 ¡Piensa en grande! 💫",
+  "✨ ¡Sueña sin límites! ✨", "🌟 ¡Tus ideas valen! 🌟", "💫 ¡Actitud positiva! 💫",
+  "✨ ¡Hazte escuchar! ✨", "🌟 ¡Rompe los moldes! 🌟", "💫 ¡Vales oro! 💫",
+  "✨ ¡El futuro es tuyo! ✨", "🌟 ¡Paso a paso, siempre! 🌟", "💫 ¡Crea magia! 💫",
+  "✨ ¡Tú eres la chispa! ✨", "🌟 ¡Sorprende al mundo! 🌟", "💫 ¡Sé tu propia musa! 💫",
+  "✨ ¡Levántate y brilla! ✨", "🌟 ¡Escribe tu historia! 🌟", "💫 ¡No hay imposibles! 💫",
+  "✨ ¡Vive tu aventura! ✨", "🌟 ¡Atrévete a ser tú! 🌟", "💫 ¡El éxito te abraza! 💫",
+  "✨ ¡Fluye con la vida! ✨", "🌟 ¡Todo a tu favor! 🌟", "💫 ¡Imagina y crea! 💫"
 ];
 function showEasterEgg() {
   showingEasterEgg = true;
@@ -356,7 +368,10 @@ function executeCopy(suffix) {
 }
 function setCalculatorTheme(theme){
   const shell=document.getElementById('calculator-shell');if(!shell||!theme)return;
-  [['accent','--calc-accent'],['dark','--calc-accent-dark'],['shellTop','--calc-shell-top'],['shellBottom','--calc-shell-bottom'],['display','--calc-display'],['displayText','--calc-display-text'],['numTop','--calc-num-top'],['numBottom','--calc-num-bottom'],['numShadow','--calc-num-shadow'],['opTop','--calc-op-top'],['opBottom','--calc-op-bottom'],['opShadow','--calc-op-shadow'],['clearTop','--calc-clear-top'],['clearBottom','--calc-clear-bottom'],['clearShadow','--calc-clear-shadow']].forEach(([key,prop])=>shell.style.setProperty(prop,theme[key]));
+  [['accent','--calc-accent'],['dark','--calc-accent-dark'],['shellTop','--calc-shell-top'],['shellBottom','--calc-shell-bottom'],['display','--calc-display'],['displayText','--calc-display-text'],['numTop','--calc-num-top'],['numBottom','--calc-num-bottom'],['numShadow','--calc-num-shadow'],['opTop','--calc-op-top'],['opBottom','--calc-op-bottom'],['opShadow','--calc-op-shadow'],['clearTop','--calc-clear-top'],['clearBottom','--calc-clear-bottom'],['clearShadow','--calc-clear-shadow'],['topOpTop','--calc-top-op-top'],['topOpBottom','--calc-top-op-bottom'],['topOpShadow','--calc-top-op-shadow']].forEach(([key,prop])=>{
+    if(theme[key]) shell.style.setProperty(prop,theme[key]);
+    else shell.style.removeProperty(prop);
+  });
   lsSet('hogar_calc_theme',JSON.stringify(theme));
   document.querySelector('meta[name="theme-color"]').setAttribute('content', theme.shellBottom);
 }
