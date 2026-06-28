@@ -22,10 +22,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
   --calc-num-shadow:#7E8177;--calc-op-top:#EFF4FA;--calc-op-bottom:#CAD2DD;--calc-op-shadow:#8490A0;
   --calc-clear-top:#FFD8D5;--calc-clear-bottom:#F2A6A0;--calc-clear-shadow:#D3665E;
   background:linear-gradient(180deg,var(--calc-shell-top),var(--calc-shell-bottom));}body.edit-mode .calculator-shell { box-shadow: inset 0 0 0 4px #4A90E2; }
-body.edit-mode .calc-key::after, body.edit-mode .calculator-display::after, body.edit-mode .calc-tool-panel::after, body.edit-mode #easter-egg-text::after {
+body.edit-mode .calc-key::after, body.edit-mode .calculator-display::after, body.edit-mode .calc-tool-panel::after, body.edit-mode .calc-tool-button::after, body.edit-mode #easter-egg-text::after {
   content:''; position:absolute; inset:0; border:3px solid #4A90E2; border-radius:inherit; opacity:0; pointer-events:none; z-index:99; transition:opacity .1s;
 }
-body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:active::after, body.edit-mode .calc-tool-panel:active::after, body.edit-mode #easter-egg-text:active::after { opacity:1; }
+body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:active::after, body.edit-mode .calc-tool-panel:active::after, body.edit-mode .calc-tool-button:active::after, body.edit-mode #easter-egg-text:active::after { opacity:1; }
 .calc-top-bar { display:flex; align-items:center; justify-content:space-between; margin-top:10px; margin-bottom:12px; padding:0 4px; }
 .calc-top-bar h1 { font-size:16px; font-weight:800; color:#573722; text-transform:uppercase; letter-spacing:1px; }
 .calc-close-btn{display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;min-height:28px;line-height:1;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));border:1px solid rgba(255,255,255,.5);border-radius:14px;font-size:12px;font-weight:800;color:#151515;box-shadow:0 3px 0 var(--calc-op-shadow),0 4px 6px rgba(0,0,0,.15);cursor:pointer;transition:all .1s}
@@ -66,9 +66,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:activ
 .calc-copy-menu button { padding:14px; border-radius:10px; border:none; background:var(--calc-op-bottom); font-size:16px; font-weight:bold; cursor:pointer;}
 .calc-copy-menu button:active { opacity:0.8; }
 
-.calculator-percent-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
-.calc-tool-button{min-height:44px;border:1px solid rgba(255,255,255,.72);border-radius:12px;color:#151515;font-size:13px;font-weight:600;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 4px 0 var(--calc-op-shadow),0 6px 9px rgba(0,0,0,.16);cursor:pointer}.calc-tool-button:active,.calc-tool-button.active{transform:translateY(4px);box-shadow:inset 0 2px 4px rgba(0,0,0,.18)}
-.calc-tool-panel{display:none;margin-top:10px;padding:12px;border:1px solid rgba(52,35,28,.18);border-radius:12px;background:rgba(255,255,255,.42)}.calc-tool-panel.open{display:block}.calc-tool-fields{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:9px}.calc-tool-field label{display:block;margin-bottom:4px;color:var(--calc-display-text);font-size:11px;font-weight:600}.calc-tool-field input{width:100%;min-height:42px;padding:8px 10px;border:1.5px solid rgba(52,35,28,.28);border-radius:9px;background:rgba(255,255,255,.82);color:#151515;font-size:18px;text-align:right}.calc-tool-calculate{width:100%;min-height:42px;margin-top:9px;border:1px solid rgba(255,255,255,.7);border-radius:10px;color:#151515;font-weight:600;background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 4px 0 var(--calc-accent-dark),0 6px 8px rgba(0,0,0,.16);cursor:pointer}.calc-tool-result{min-height:42px;margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--calc-display);color:var(--calc-display-text);font-size:13px;line-height:1.45}
+.calc-tool-panel{display:none;flex-direction:row;gap:8px;margin-top:12px;background:var(--calc-tool-panel,var(--calc-shell-top));padding:10px;border-radius:12px;box-shadow:inset 0 2px 4px rgba(0,0,0,.05);position:relative}.calc-tool-button{flex:1;padding:12px 6px;font-size:clamp(10px,3vw,13px);font-weight:800;color:#2E241E;background:var(--calc-tool-btn, rgba(255,255,255,.5));border:1px solid rgba(0,0,0,.1);border-radius:8px;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.05);position:relative}.calc-tool-button:active{background:var(--calc-tool-btn, rgba(255,255,255,.8));box-shadow:0 0 0 rgba(0,0,0,.05);transform:translateY(2px)}.calc-tool-panel.open{display:flex}.calc-tool-fields{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:9px}.calc-tool-field label{display:block;margin-bottom:4px;color:var(--calc-display-text);font-size:11px;font-weight:600}.calc-tool-field input{width:100%;min-height:42px;padding:8px 10px;border:1.5px solid rgba(52,35,28,.28);border-radius:9px;background:rgba(255,255,255,.82);color:#151515;font-size:18px;text-align:right}.calc-tool-calculate{width:100%;min-height:42px;margin-top:9px;border:1px solid rgba(255,255,255,.7);border-radius:10px;color:#151515;font-weight:600;background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 4px 0 var(--calc-accent-dark),0 6px 8px rgba(0,0,0,.16);cursor:pointer}.calc-tool-result{min-height:42px;margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--calc-display);color:var(--calc-display-text);font-size:13px;line-height:1.45}
 
 .calculator-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px; padding-top: 10px;}
 .calc-key{min-height:clamp(58px, 15vh, 80px);border:1px solid rgba(255,255,255,.72);border-radius:10px;font-size:30px;font-weight:400;color:#151515;background:linear-gradient(180deg,var(--calc-num-top),var(--calc-num-bottom));box-shadow:0 8px 0 var(--calc-num-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95);cursor:pointer}.calc-key:active{transform:translateY(8px);box-shadow:0 0 0 var(--calc-num-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.op{background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 5px 0 var(--calc-op-shadow),0 7px 10px rgba(0,0,0,.18)}.calc-key.clear{background:linear-gradient(180deg,var(--calc-clear-top),var(--calc-clear-bottom));box-shadow:0 5px 0 var(--calc-clear-shadow),0 7px 10px rgba(0,0,0,.18)}.calc-key.top-op{background:linear-gradient(180deg,var(--calc-top-op-top, var(--calc-clear-top)),var(--calc-top-op-bottom, var(--calc-clear-bottom)));box-shadow:0 5px 0 var(--calc-top-op-shadow, var(--calc-clear-shadow)),0 7px 10px rgba(0,0,0,.18)}.calc-key.equals{background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 5px 0 var(--calc-accent-dark),0 7px 10px rgba(0,0,0,.2)}
@@ -106,7 +104,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:activ
 @media(max-width:430px){
   .calculator-signature{width:82px}.calculator-display-actions{gap:7px}
   .calc-mini-key{min-width:58px;padding:0 11px}.calc-mini-key.sound{min-width:44px;padding:0 9px}
-  .calculator-percent-tools{gap:6px}.calc-tool-button{font-size:11px}.calculator-grid{gap:8px}
+  .calculator-grid{gap:8px}
 }
 </style>
 </head>
@@ -167,10 +165,10 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:activ
     </div>
   </div>
 
-  <div class="calculator-percent-tools">
-    <button class="calc-tool-button" id="calc-discount-button" onclick="toggleCalcPercentTool('discount')">− % Descuento</button>
-    <button class="calc-tool-button" id="calc-increase-button" onclick="toggleCalcPercentTool('increase')">+ % Aumento</button>
-    <button class="calc-tool-button" id="calc-vat-button" onclick="toggleCalcPercentTool('vat')">Precio sin IVA</button>
+  <div class="calc-tool-panel" id="calc-tool-panel" onclick="if(typeof isEditMode!=='undefined' && isEditMode) handleEditModeSelect('toolpanel')">
+    <button class="calc-tool-button" id="calc-discount-button" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('toolbtn'); } else toggleCalcPercentTool('discount')">- % Descuento</button>
+    <button class="calc-tool-button" id="calc-increase-button" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('toolbtn'); } else toggleCalcPercentTool('increase')">+ % Aumento</button>
+    <button class="calc-tool-button" id="calc-vat-button" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('toolbtn'); } else toggleCalcPercentTool('vat')">Precio sin IVA</button>
   </div>
   
   <div class="calc-tool-panel" id="calc-percent-panel">
@@ -379,7 +377,7 @@ function executeCopy(suffix) {
   toggleCopyMenu();
 }
 function setCalculatorTheme(theme){
-  const root=document.documentElement;if(!theme)return;
+  const root=document.getElementById('calculator-shell');if(!root||!theme)return;
   [['accent','--calc-accent'],['dark','--calc-accent-dark'],['shellTop','--calc-shell-top'],['shellBottom','--calc-shell-bottom'],['display','--calc-display'],['displayText','--calc-display-text'],['numTop','--calc-num-top'],['numBottom','--calc-num-bottom'],['numShadow','--calc-num-shadow'],['opTop','--calc-op-top'],['opBottom','--calc-op-bottom'],['opShadow','--calc-op-shadow'],['clearTop','--calc-clear-top'],['clearBottom','--calc-clear-bottom'],['clearShadow','--calc-clear-shadow']].forEach(([key,prop])=>{
     if(theme[key]) root.style.setProperty(prop,theme[key]);
     else root.style.removeProperty(prop);
@@ -395,10 +393,13 @@ function setCalculatorTheme(theme){
   }
 
   if (theme.toolPanel) root.style.setProperty('--calc-tool-panel', theme.toolPanel);
-  else root.style.setProperty('--calc-tool-panel', theme.shellTop);
+  else root.style.removeProperty('--calc-tool-panel');
+
+  if (theme.toolBtn) root.style.setProperty('--calc-tool-btn', theme.toolBtn);
+  else root.style.removeProperty('--calc-tool-btn');
 
   if (theme.easterEgg) root.style.setProperty('--calc-easter-egg', theme.easterEgg);
-  else root.style.setProperty('--calc-easter-egg', theme.accent);
+  else root.style.removeProperty('--calc-easter-egg');
 
   document.querySelectorAll('.calc-key').forEach(btn => {
     btn.style.removeProperty('--calc-num-top');
@@ -529,6 +530,7 @@ function handleEditModeSelect(type, val) {
   if (type === 'display') { editType = 'display'; name = 'Pantalla'; }
   else if (type === 'shell') { editType = 'shell'; name = 'Fondo'; }
   else if (type === 'toolpanel') { editType = 'toolpanel'; name = 'Caja Descuento'; }
+  else if (type === 'toolbtn') { editType = 'toolbtn'; name = 'Botones Herramienta'; }
   else if (type === 'easteregg') { editType = 'easteregg'; name = 'Frase Motivadora'; }
   else if (type === 'key') {
      editType = 'key_' + val;
@@ -570,6 +572,8 @@ function applyCustomColor(type, baseHex) {
     currentCustomTheme.shellBottom = adjustBrightness(baseHex, 0.9);
   } else if (type === 'toolpanel') {
     currentCustomTheme.toolPanel = baseHex;
+  } else if (type === 'toolbtn') {
+    currentCustomTheme.toolBtn = baseHex;
   } else if (type === 'easteregg') {
     currentCustomTheme.easterEgg = baseHex;
   } else if (type.startsWith('key_')) {
