@@ -21,11 +21,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-s
   --calc-display:#B8DDE6;--calc-display-text:#10222B;--calc-num-top:#F2F1EC;--calc-num-bottom:#C9C9BD;
   --calc-num-shadow:#7E8177;--calc-op-top:#EFF4FA;--calc-op-bottom:#CAD2DD;--calc-op-shadow:#8490A0;
   --calc-clear-top:#FFD8D5;--calc-clear-bottom:#F2A6A0;--calc-clear-shadow:#D3665E;
-  background:linear-gradient(180deg,var(--calc-shell-top),var(--calc-shell-bottom));}body.edit-mode .calculator-shell { box-shadow: inset 0 0 0 4px #E74C3C; }
-body.edit-mode .calc-key::after, body.edit-mode .calculator-display::after {
-  content:''; position:absolute; inset:0; border:3px solid #E74C3C; border-radius:inherit; opacity:0; pointer-events:none; z-index:99; transition:opacity .1s;
+  background:linear-gradient(180deg,var(--calc-shell-top),var(--calc-shell-bottom));}body.edit-mode .calculator-shell { box-shadow: inset 0 0 0 4px #4A90E2; }
+body.edit-mode .calc-key::after, body.edit-mode .calculator-display::after, body.edit-mode .calc-tool-panel::after, body.edit-mode #easter-egg-text::after {
+  content:''; position:absolute; inset:0; border:3px solid #4A90E2; border-radius:inherit; opacity:0; pointer-events:none; z-index:99; transition:opacity .1s;
 }
-body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:active::after { opacity:1; }
+body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:active::after, body.edit-mode .calc-tool-panel:active::after, body.edit-mode #easter-egg-text:active::after { opacity:1; }
 .calc-top-bar { display:flex; align-items:center; justify-content:space-between; margin-top:10px; margin-bottom:12px; padding:0 4px; }
 .calc-top-bar h1 { font-size:16px; font-weight:800; color:#573722; text-transform:uppercase; letter-spacing:1px; }
 .calc-close-btn{display:inline-flex;align-items:center;justify-content:center;padding:4px 12px;min-height:28px;line-height:1;background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));border:1px solid rgba(255,255,255,.5);border-radius:14px;font-size:12px;font-weight:800;color:#151515;box-shadow:0 3px 0 var(--calc-op-shadow),0 4px 6px rgba(0,0,0,.15);cursor:pointer;transition:all .1s}
@@ -116,7 +116,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calculator-display:activ
     <button class="calc-close-btn" onclick="alert('Para salir de la calculadora, desliza la pantalla hacia arriba desde la parte inferior de tu iPhone.')">Salir</button>
   </div>
   
-  <div id="edit-top-bar" style="display:none; background:#E74C3C; color:white; padding:10px 14px; border-radius:14px; margin-top:10px; margin-bottom:12px; align-items:center; justify-content:space-between;">
+  <div id="edit-top-bar" style="display:none; background:#4A90E2; color:white; padding:10px 14px; border-radius:14px; margin-top:10px; margin-bottom:12px; align-items:center; justify-content:space-between;">
     <div>
       <div style="font-size:12px; font-weight:800; text-transform:uppercase; opacity:0.9;">🎨 Editando:</div>
       <div id="edit-mode-target" style="font-size:16px; font-weight:900;">Fondo</div>
@@ -256,7 +256,7 @@ function showEasterEgg() {
   showingEasterEgg = true;
   const quote = easterEggQuotes[Math.floor(Math.random() * easterEggQuotes.length)];
   document.getElementById('calc-expression').innerHTML = '';
-  document.getElementById('calc-value').innerHTML = `<span style="font-size:clamp(16px,5vw,26px);color:var(--calc-accent);font-weight:900;font-family:ui-rounded,'SF Pro Rounded',Arial,sans-serif;letter-spacing:0;text-align:center;display:block;padding:10px 0;">${quote}</span>`;
+  document.getElementById('calc-value').innerHTML = `<span id="easter-egg-text" onclick="if(typeof isEditMode!=='undefined' && isEditMode) { if(typeof event!=='undefined' && event) event.stopPropagation(); handleEditModeSelect('easteregg'); }" style="font-size:clamp(16px,5vw,26px);color:var(--calc-easter-egg, var(--calc-accent));font-weight:900;font-family:ui-rounded,'SF Pro Rounded',Arial,sans-serif;letter-spacing:0;text-align:center;display:block;padding:10px 0;position:relative;">${quote}</span>`;
 }
 function handleDisplayClick() {
   if (typeof isEditMode!=='undefined' && isEditMode) { handleEditModeSelect('display'); return; }
@@ -379,12 +379,74 @@ function executeCopy(suffix) {
   toggleCopyMenu();
 }
 function setCalculatorTheme(theme){
-  const shell=document.getElementById('calculator-shell');if(!shell||!theme)return;
-  [['accent','--calc-accent'],['dark','--calc-accent-dark'],['shellTop','--calc-shell-top'],['shellBottom','--calc-shell-bottom'],['display','--calc-display'],['displayText','--calc-display-text'],['numTop','--calc-num-top'],['numBottom','--calc-num-bottom'],['numShadow','--calc-num-shadow'],['opTop','--calc-op-top'],['opBottom','--calc-op-bottom'],['opShadow','--calc-op-shadow'],['clearTop','--calc-clear-top'],['clearBottom','--calc-clear-bottom'],['clearShadow','--calc-clear-shadow'],['topOpTop','--calc-top-op-top'],['topOpBottom','--calc-top-op-bottom'],['topOpShadow','--calc-top-op-shadow']].forEach(([key,prop])=>{
-    if(theme[key]) shell.style.setProperty(prop,theme[key]);
-    else shell.style.removeProperty(prop);
+  const root=document.documentElement;if(!theme)return;
+  [['accent','--calc-accent'],['dark','--calc-accent-dark'],['shellTop','--calc-shell-top'],['shellBottom','--calc-shell-bottom'],['display','--calc-display'],['displayText','--calc-display-text'],['numTop','--calc-num-top'],['numBottom','--calc-num-bottom'],['numShadow','--calc-num-shadow'],['opTop','--calc-op-top'],['opBottom','--calc-op-bottom'],['opShadow','--calc-op-shadow'],['clearTop','--calc-clear-top'],['clearBottom','--calc-clear-bottom'],['clearShadow','--calc-clear-shadow']].forEach(([key,prop])=>{
+    if(theme[key]) root.style.setProperty(prop,theme[key]);
+    else root.style.removeProperty(prop);
   });
-  lsSet('hogar_calc_theme',JSON.stringify(theme));
+  if(theme.topOpTop){
+    root.style.setProperty('--calc-top-op-top',theme.topOpTop);
+    root.style.setProperty('--calc-top-op-bottom',theme.topOpBottom);
+    root.style.setProperty('--calc-top-op-shadow',theme.topOpShadow);
+  } else {
+    root.style.setProperty('--calc-top-op-top',theme.clearTop);
+    root.style.setProperty('--calc-top-op-bottom',theme.clearBottom);
+    root.style.setProperty('--calc-top-op-shadow',theme.clearShadow);
+  }
+
+  if (theme.toolPanel) root.style.setProperty('--calc-tool-panel', theme.toolPanel);
+  else root.style.setProperty('--calc-tool-panel', theme.shellTop);
+
+  if (theme.easterEgg) root.style.setProperty('--calc-easter-egg', theme.easterEgg);
+  else root.style.setProperty('--calc-easter-egg', theme.accent);
+
+  document.querySelectorAll('.calc-key').forEach(btn => {
+    btn.style.removeProperty('--calc-num-top');
+    btn.style.removeProperty('--calc-num-bottom');
+    btn.style.removeProperty('--calc-num-shadow');
+    btn.style.removeProperty('--calc-op-top');
+    btn.style.removeProperty('--calc-op-bottom');
+    btn.style.removeProperty('--calc-op-shadow');
+    btn.style.removeProperty('--calc-clear-top');
+    btn.style.removeProperty('--calc-clear-bottom');
+    btn.style.removeProperty('--calc-clear-shadow');
+    btn.style.removeProperty('--calc-top-op-top');
+    btn.style.removeProperty('--calc-top-op-bottom');
+    btn.style.removeProperty('--calc-top-op-shadow');
+    btn.style.removeProperty('--calc-accent');
+    btn.style.removeProperty('--calc-accent-dark');
+  });
+
+  if (theme.keys) {
+    for (let key in theme.keys) {
+      let btn = document.querySelector(`.calc-key[data-calc="${key}"]`);
+      if (btn) {
+         let colors = theme.keys[key];
+         if (btn.classList.contains('num')) {
+           btn.style.setProperty('--calc-num-top', colors.top);
+           btn.style.setProperty('--calc-num-bottom', colors.bottom);
+           btn.style.setProperty('--calc-num-shadow', colors.shadow);
+         } else if (btn.classList.contains('op')) {
+           btn.style.setProperty('--calc-op-top', colors.top);
+           btn.style.setProperty('--calc-op-bottom', colors.bottom);
+           btn.style.setProperty('--calc-op-shadow', colors.shadow);
+         } else if (btn.classList.contains('clear')) {
+           btn.style.setProperty('--calc-clear-top', colors.top);
+           btn.style.setProperty('--calc-clear-bottom', colors.bottom);
+           btn.style.setProperty('--calc-clear-shadow', colors.shadow);
+         } else if (btn.classList.contains('top-op')) {
+           btn.style.setProperty('--calc-top-op-top', colors.top);
+           btn.style.setProperty('--calc-top-op-bottom', colors.bottom);
+           btn.style.setProperty('--calc-top-op-shadow', colors.shadow);
+         } else if (btn.classList.contains('equals')) {
+           btn.style.setProperty('--calc-accent', colors.top);
+           btn.style.setProperty('--calc-accent-dark', colors.shadow);
+         }
+      }
+    }
+  }
+  
+  lsSet('hogar_calc_theme', JSON.stringify(theme));
   document.querySelector('meta[name="theme-color"]').setAttribute('content', theme.shellBottom);
 }
 
@@ -429,7 +491,7 @@ function toggleEditMode() {
   if (isEditMode) {
     document.body.classList.add('edit-mode');
     btn.innerHTML = '🛑 Salir Diseño';
-    btn.style.background = '#E74C3C';
+    btn.style.background = '#4A90E2';
     topBar.style.display = 'none';
     editBar.style.display = 'flex';
     toggleCalculatorPalette();
@@ -445,7 +507,7 @@ function toggleEditMode() {
       currentCustomTheme.name = 'Mi Diseño';
     }
     setTimeout(() => {
-      alert('🎨 MODO DISEÑO INICIADO\\n\\n1. Toca cualquier botón o parte de la calculadora para seleccionarlo.\\n2. Arriba verás lo que has seleccionado (ej. "Números").\\n3. Toca el cuadradito blanco de arriba para elegir el color.');
+      alert('🎨 MODO DISEÑO INICIADO\n\n1. Toca cualquier botón o parte de la calculadora para seleccionarlo.\n2. Arriba verás lo que has seleccionado (ej. "Números").\n3. Toca el cuadradito blanco de arriba para elegir el color.');
     }, 150);
   } else {
     document.body.classList.remove('edit-mode');
@@ -466,12 +528,11 @@ function handleEditModeSelect(type, val) {
   let name = '';
   if (type === 'display') { editType = 'display'; name = 'Pantalla'; }
   else if (type === 'shell') { editType = 'shell'; name = 'Fondo'; }
+  else if (type === 'toolpanel') { editType = 'toolpanel'; name = 'Caja Descuento'; }
+  else if (type === 'easteregg') { editType = 'easteregg'; name = 'Frase Motivadora'; }
   else if (type === 'key') {
-     if (val === 'C') { editType = 'clear'; name = 'Botón C'; }
-     else if (val === '%' || val === '+/-') { editType = 'topOp'; name = 'Botones Superiores'; }
-     else if (['/','*','-','+'].includes(val)) { editType = 'op'; name = 'Operadores'; }
-     else if (val === '=') { editType = 'accent'; name = 'Botón Igual'; }
-     else { editType = 'num'; name = 'Números'; }
+     editType = 'key_' + val;
+     name = 'Botón ' + val;
   }
   
   if (editType) {
@@ -507,25 +568,18 @@ function applyCustomColor(type, baseHex) {
   } else if (type === 'shell') {
     currentCustomTheme.shellTop = baseHex;
     currentCustomTheme.shellBottom = adjustBrightness(baseHex, 0.9);
-  } else if (type === 'num') {
-    currentCustomTheme.numTop = baseHex;
-    currentCustomTheme.numBottom = adjustBrightness(baseHex, 0.85);
-    currentCustomTheme.numShadow = adjustBrightness(baseHex, 0.65);
-  } else if (type === 'op') {
-    currentCustomTheme.opTop = baseHex;
-    currentCustomTheme.opBottom = adjustBrightness(baseHex, 0.85);
-    currentCustomTheme.opShadow = adjustBrightness(baseHex, 0.65);
-  } else if (type === 'clear') {
-    currentCustomTheme.clearTop = baseHex;
-    currentCustomTheme.clearBottom = adjustBrightness(baseHex, 0.85);
-    currentCustomTheme.clearShadow = adjustBrightness(baseHex, 0.65);
-  } else if (type === 'topOp') {
-    currentCustomTheme.topOpTop = baseHex;
-    currentCustomTheme.topOpBottom = adjustBrightness(baseHex, 0.85);
-    currentCustomTheme.topOpShadow = adjustBrightness(baseHex, 0.65);
-  } else if (type === 'accent') {
-    currentCustomTheme.accent = baseHex;
-    currentCustomTheme.dark = adjustBrightness(baseHex, 0.75);
+  } else if (type === 'toolpanel') {
+    currentCustomTheme.toolPanel = baseHex;
+  } else if (type === 'easteregg') {
+    currentCustomTheme.easterEgg = baseHex;
+  } else if (type.startsWith('key_')) {
+    let keyVal = type.substring(4);
+    if (!currentCustomTheme.keys) currentCustomTheme.keys = {};
+    currentCustomTheme.keys[keyVal] = {
+      top: baseHex,
+      bottom: adjustBrightness(baseHex, 0.85),
+      shadow: adjustBrightness(baseHex, 0.65)
+    };
   }
   
   setCalculatorTheme(currentCustomTheme);
