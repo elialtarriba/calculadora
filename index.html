@@ -78,7 +78,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calc-mini-key:active::af
 .calc-tool-panel{display:none;margin-top:10px;padding:12px;border:1px solid rgba(52,35,28,.18);border-radius:12px;background:var(--calc-percent-panel-bg, rgba(255,255,255,.42))}.calc-tool-panel.open{display:block}.calc-tool-fields{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:9px}.calc-tool-field label{display:block;margin-bottom:4px;color:var(--calc-display-text);font-size:11px;font-weight:600}.calc-tool-field input{width:100%;min-height:42px;padding:8px 10px;border:1.5px solid rgba(52,35,28,.28);border-radius:9px;background:var(--calc-tool-inputs, rgba(255,255,255,.82));color:#151515;font-size:18px;text-align:right; cursor:pointer}.calc-tool-calculate{position:relative;overflow:hidden;width:100%;min-height:42px;margin-top:9px;border:1px solid rgba(255,255,255,.7);border-radius:10px;color:#151515;font-weight:600;background:linear-gradient(180deg,var(--calc-tool-calc-top,color-mix(in srgb,var(--calc-tool-calc-btn,var(--calc-accent)) 55%,#fff 45%)),var(--calc-tool-calc-bottom,var(--calc-tool-calc-btn,var(--calc-accent))));box-shadow:0 8px 0 var(--calc-tool-calc-shadow,var(--calc-accent-dark)),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95);cursor:pointer;--calc-tool-calc-top:color-mix(in srgb,var(--calc-tool-calc-btn,var(--calc-accent)) 80%,#FFF);--calc-tool-calc-bottom:var(--calc-tool-calc-btn,var(--calc-accent));--calc-tool-calc-shadow:color-mix(in srgb,var(--calc-tool-calc-btn,var(--calc-accent-dark)) 75%,#000);}.calc-tool-calculate:active{transform:translateY(8px);box-shadow:0 0 0 var(--calc-tool-calc-shadow,var(--calc-accent-dark)),inset 0 3px 5px rgba(0,0,0,.2)}.calc-tool-calculate::before{content:'';position:absolute;top:12%;left:16%;right:16%;bottom:12%;border-radius:40%;box-shadow:inset 0 4px 6px rgba(0,0,0,.08),inset 0 -4px 6px rgba(255,255,255,.3);background:radial-gradient(ellipse at center,rgba(0,0,0,.04) 0%,transparent 70%);pointer-events:none;transition:opacity .15s}.calc-tool-calculate:active::before{opacity:0.4}.calc-tool-result{min-height:0;margin-top:10px;padding:9px 11px;border-radius:9px;background:var(--calc-display);color:var(--calc-display-text);font-size:13px;line-height:1.45}
 
 .calculator-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px; padding-top: 10px;}
-.calc-key{position:relative;overflow:hidden;min-height:clamp(58px, 15vh, 80px);border:1px solid rgba(255,255,255,.72);border-radius:10px;font-size:30px;font-weight:400;color:#151515;background:linear-gradient(180deg,var(--calc-num-top),var(--calc-num-bottom));box-shadow:0 8px 0 var(--calc-num-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95);cursor:pointer}.calc-key::before{content:'';position:absolute;top:12%;left:16%;right:16%;bottom:12%;border-radius:40%;box-shadow:inset 0 4px 6px rgba(0,0,0,.08),inset 0 -4px 6px rgba(255,255,255,.3);background:radial-gradient(ellipse at center,rgba(0,0,0,.04) 0%,transparent 70%);pointer-events:none;transition:opacity .15s}.calc-key:active{transform:translateY(8px);box-shadow:0 0 0 var(--calc-num-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key:active::before{opacity:0.4}.calc-key.op{background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 8px 0 var(--calc-op-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.op:active{box-shadow:0 0 0 var(--calc-op-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.clear{background:linear-gradient(180deg,var(--calc-clear-top),var(--calc-clear-bottom));box-shadow:0 8px 0 var(--calc-clear-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.clear:active{box-shadow:0 0 0 var(--calc-clear-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.top-op{background:linear-gradient(180deg,var(--calc-top-op-top, var(--calc-clear-top)),var(--calc-top-op-bottom, var(--calc-clear-bottom)));box-shadow:0 8px 0 var(--calc-top-op-shadow, var(--calc-clear-shadow)),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.top-op:active{box-shadow:0 0 0 var(--calc-top-op-shadow, var(--calc-clear-shadow)),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.equals{background:linear-gradient(180deg,color-mix(in srgb,var(--calc-accent) 55%,#fff 45%),var(--calc-accent));box-shadow:0 8px 0 var(--calc-accent-dark),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.equals:active{box-shadow:0 0 0 var(--calc-accent-dark),inset 0 3px 5px rgba(0,0,0,.2)}
+.calc-key{position:relative;overflow:hidden;min-height:clamp(58px, 15vh, 80px);border:1px solid rgba(255,255,255,.72);border-radius:10px;font-size:30px;font-weight:400;color:#151515;background:linear-gradient(180deg,var(--calc-num-top),var(--calc-num-bottom));box-shadow:0 8px 0 var(--calc-num-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95);cursor:pointer}.calc-key::before{content:'';position:absolute;top:12%;left:16%;right:16%;bottom:12%;border-radius:40%;box-shadow:inset 0 4px 6px rgba(0,0,0,.08),inset 0 -4px 6px rgba(255,255,255,.3);background:radial-gradient(ellipse at center,rgba(0,0,0,.04) 0%,transparent 70%);pointer-events:none;transition:opacity .15s}.calc-key:active{transform:translateY(8px);box-shadow:0 0 0 var(--calc-num-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key:active::before{opacity:0.4}.calc-key.op{background:linear-gradient(180deg,var(--calc-op-top),var(--calc-op-bottom));box-shadow:0 8px 0 var(--calc-op-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.op:active{box-shadow:0 0 0 var(--calc-op-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.clear{background:linear-gradient(180deg,var(--calc-clear-top),var(--calc-clear-bottom));box-shadow:0 8px 0 var(--calc-clear-shadow),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.clear:active{box-shadow:0 0 0 var(--calc-clear-shadow),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.top-op{background:linear-gradient(180deg,var(--calc-top-op-top, var(--calc-clear-top)),var(--calc-top-op-bottom, var(--calc-clear-bottom)));box-shadow:0 8px 0 var(--calc-top-op-shadow, var(--calc-clear-shadow)),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.top-op:active{box-shadow:0 0 0 var(--calc-top-op-shadow, var(--calc-clear-shadow)),inset 0 3px 5px rgba(0,0,0,.2)}.calc-key.equals{background:linear-gradient(180deg,var(--calc-accent-top, color-mix(in srgb,var(--calc-accent) 55%,#fff 45%)),var(--calc-accent-bottom, var(--calc-accent)));box-shadow:0 8px 0 var(--calc-accent-dark),0 11px 15px rgba(0,0,0,.26),inset 0 2px 1px rgba(255,255,255,.95)}.calc-key.equals:active{box-shadow:0 0 0 var(--calc-accent-dark),inset 0 3px 5px rgba(0,0,0,.2)}
 
 /* History Overlay Styles */
 .calc-history-overlay {
@@ -205,7 +205,7 @@ body.edit-mode .calc-key:active::after, body.edit-mode .calc-mini-key:active::af
     <button class="calc-key" data-calc="1">1</button><button class="calc-key" data-calc="2">2</button><button class="calc-key" data-calc="3">3</button><button class="calc-key op" data-calc="+">＋</button>
     <button class="calc-key" data-calc="0">0</button><button class="calc-key" data-calc=".">,</button><button class="calc-key" data-calc="back">⌫</button><button class="calc-key equals" data-calc="=">=</button>
   </div>
-  <div class="app-version" style="position:absolute; bottom:16px; right:16px; font-size:14px; font-weight:900; color:var(--calc-display-text); opacity:0.35; pointer-events:none;">v53</div>
+  <div class="app-version" style="position:absolute; bottom:16px; right:16px; font-size:14px; font-weight:900; color:var(--calc-display-text); opacity:0.35; pointer-events:none;">v55</div>
 </div>
 
 <script>
@@ -490,7 +490,8 @@ function setCalculatorTheme(theme){
            btn.style.setProperty('--calc-top-op-bottom', colors.bottom);
            btn.style.setProperty('--calc-top-op-shadow', colors.shadow);
          } else if (btn.classList.contains('equals')) {
-           btn.style.setProperty('--calc-accent', colors.top);
+           btn.style.setProperty('--calc-accent-top', colors.top);
+           btn.style.setProperty('--calc-accent-bottom', colors.bottom);
            btn.style.setProperty('--calc-accent-dark', colors.shadow);
          } else {
            btn.style.setProperty('--calc-num-top', colors.top);
@@ -769,7 +770,9 @@ function handleEditModeSelect(type, val) {
               } else if (btn.classList.contains('top-op')) {
                  hex = currentCustomTheme.clearTop || defT.clearTop || hex;
               } else if (btn.classList.contains('equals')) {
-                 hex = currentCustomTheme.accent || defT.accent || hex;
+                 let baseAccent = currentCustomTheme.accent || defT.accent || hex;
+                 // Compute a 55% mix of baseAccent and 45% white to match CSS color-mix exactly
+                 hex = mixHexWithWhite(baseAccent, 0.45);
               } else if (btn.classList.contains('clear')) {
                  hex = currentCustomTheme.clearTop || defT.clearTop || hex;
               } else {
@@ -804,6 +807,14 @@ function adjustBrightness(hex, factor) {
   g = Math.max(0, Math.min(255, g * factor));
   b = Math.max(0, Math.min(255, b * factor));
   return rgbToHex(Math.round(r), Math.round(g), Math.round(b));
+}
+
+function mixHexWithWhite(hex, whiteRatio) {
+  let [r,g,b] = hexToRgb(hex);
+  r = Math.round(r * (1 - whiteRatio) + 255 * whiteRatio);
+  g = Math.round(g * (1 - whiteRatio) + 255 * whiteRatio);
+  b = Math.round(b * (1 - whiteRatio) + 255 * whiteRatio);
+  return rgbToHex(r, g, b);
 }
 
 function applyCustomColor(type, baseHex) {
